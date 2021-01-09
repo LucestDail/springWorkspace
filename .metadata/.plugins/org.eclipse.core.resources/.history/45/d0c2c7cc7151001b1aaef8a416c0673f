@@ -1,0 +1,45 @@
+package controller;
+
+
+import javax.servlet.http.HttpSession;
+
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Validator;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
+
+import logic.ShopService;
+import logic.User;
+
+public class LoginController {
+	private ShopService shopService;
+	private Validator validator;
+	
+	public void setShopService(ShopService shopService) {
+		this.shopService = shopService;
+	}
+	
+	public void setValidator(Validator validator) {// setValidator!!! not setLoginValidator!!!
+		this.validator = validator;
+	}
+	
+	@GetMapping // 리턴타입 : String => 뷰의 이름 전달
+	public String loginForm(Model model) { // Model 데이터 저장
+		model.addAttribute(new User());
+		return null; //url : login.shop => view : login.jsp 설정
+	}
+	
+	@PostMapping
+	public ModelAndView login(User user, BindingResult bindResult, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		validator.validate(user, bindResult);
+		if(bindResult.hasErrors()) {
+			mav.getModel().putAll(bindResult.getModel());
+			return mav;
+		}
+		return mav;
+	}
+	
+}

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns = "https://www.springframework.org/schema/beans"
+	xmlns:xsi = "http://www.w3.org/2001/XMlSchema-instance"
+xsi:schemaLocation = "http://www.springframework.org/schema/beans
+	http://www.springframework.org/schema/beans/spring-beans.xsd">
+	<bean id="greeter" class="chap1.Greeter">
+		<property name = "format" value = "%s 배우는 중..." />
+	</bean>
+</beans>

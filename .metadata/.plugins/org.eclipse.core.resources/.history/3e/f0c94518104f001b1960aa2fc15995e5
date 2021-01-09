@@ -1,0 +1,17 @@
+package spring;
+
+public class MariadbArticleDao implements ArticleDao{
+	@Override
+	public void insert() {
+		// TODO Auto-generated method stub
+		System.out.println("MariadbArticleDao.insert() 메소드 호출");
+		
+	}
+	@Override
+	public String select() {
+		// TODO Auto-generated method stub
+		System.out.println("MariadbArticleDao.select() 메소드 호출");
+		return "홍길동의 글";
+	}
+
+}

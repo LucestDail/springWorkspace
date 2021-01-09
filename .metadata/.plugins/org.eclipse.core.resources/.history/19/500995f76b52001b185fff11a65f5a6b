@@ -1,0 +1,12 @@
+package osh;
+import org.springframework.stereotype.Component;
+@Component
+public class WriteArticleServiceImpl implements WriteArticleService{
+
+	@Override
+	public void write(Article article) {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

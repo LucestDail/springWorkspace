@@ -1,0 +1,31 @@
+package dao;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.sql.DataSource;
+
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+
+import logic.User;
+
+public class UserDao {
+	private NamedParameterJdbcTemplate template;
+	private RowMapper<User> mapper = new BeanPropertyRowMapper<User>(User.class);
+	public void setDataSorce(DataSource dataSource) {
+		this.template = new NamedParameterJdbcTemplate(dataSource);
+	}
+	
+	public List<User> list(){
+		return template.query("select * from useraccount", mapper);
+	}
+	
+	public User selectOne(String id) {
+		Map<String, String> param = new HashMap<>();
+		param.put("id", id);
+		return template.queryForObject("select * from useraccount where id =:id", param, mapper);
+	}
+}

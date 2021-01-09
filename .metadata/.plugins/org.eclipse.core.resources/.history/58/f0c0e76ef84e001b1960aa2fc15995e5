@@ -1,0 +1,29 @@
+package chap3;
+
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+
+public class Main1 {
+	public static void main(String[] args) {
+		ApplicationContext ctx = new AnnotationConfigApplicationContext(AppCtx.class);
+		Executor exec = ctx.getBean("executor",Executor.class);
+		exec.addUnit(new WorkUnit());
+		exec.addUnit(new WorkUnit());
+		HomeController home = ctx.getBean("HomeController",HomeController.class);
+		home.checkSensorAndAlarm();
+		//Window intrusion
+		System.out.println("==========Window Intrusion==========");
+		InfraredRaySensor sensor = ctx.getBean("windowSensor",InfraredRaySensor.class);
+		sensor.foundObject();
+		home.checkSensorAndAlarm();
+		System.out.println("==========Door Intrusion==========");
+		sensor = ctx.getBean("doorSensor",InfraredRaySensor.class);
+		sensor.foundObject();
+		home.checkSensorAndAlarm();
+		System.out.println("==========Lamp Intrusion==========");
+		sensor = new InfraredRaySensor("전등센서");
+		sensor.foundObject();
+		home.checkSensorAndAlarm();
+	}
+
+}
