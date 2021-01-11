@@ -1,6 +1,0 @@
-package kr.goodee.chap1;
-
-import org.springframework.context.support.GenericApplicationContext;
-
-public class Main1 {
-}
