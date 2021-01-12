@@ -29,7 +29,7 @@ public class ItemController {
 		mav.addObject("itemList",itemList); // 뷰단 itemList 라는 이름으로 전달
 		return mav;
 	}
-	@RequestMapping({"detail","edit"})
+	@RequestMapping({"detail","edit","confirm"})
 //	@RequestMapping("*")
 	public ModelAndView detail(Integer id) {
 		ModelAndView mav = new ModelAndView();
@@ -64,6 +64,15 @@ public class ItemController {
 			mav.getModel().putAll(bindingResult.getModel());
 			return mav;
 		}
+		service.itemUpdate(item,request);
+		mav.setViewName("redirect:/item/detail.shop?id="+item.getId());
 		return mav;
 	}
+	
+	@RequestMapping("delete")
+	public String delete(Integer id) {
+		service.itemDelete(id);
+		return "redirect:/item/list.shop";
+	}
+	
 }

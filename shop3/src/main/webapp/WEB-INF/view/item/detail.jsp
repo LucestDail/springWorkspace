@@ -31,6 +31,7 @@
 				<tr>
 					<td colspan = "2">
 						<form action="../cart/cartAdd.shop">
+						<input type = "hidden" name = "id" value="${item.id}">
 							<table>
 								<tr>
 									<td>

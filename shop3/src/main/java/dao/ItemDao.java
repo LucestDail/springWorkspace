@@ -51,4 +51,19 @@ public class ItemDao {
 		SqlParameterSource prop = new BeanPropertySqlParameterSource(item);
 		template.update(sqlForInsert, prop);
 	}
+
+	public void update(@Valid Item item) {
+		// TODO Auto-generated method stub
+		String sqlForUpdate = "update item set name=:name, price=:price, description=:description, pictureUrl=:pictureUrl where id=:id";
+		SqlParameterSource prop = new BeanPropertySqlParameterSource(item);
+		template.update(sqlForUpdate, prop);
+	}
+
+	public void delete(Integer id) {
+		// TODO Auto-generated method stub
+		param.clear();
+		param.put("id", id);
+		String sqlForDelete = "delete from item where id=:id";
+		template.query(sqlForDelete,param,mapper);
+	}
 }

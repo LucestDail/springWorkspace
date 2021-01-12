@@ -8,8 +8,8 @@
 <title>상품 목록</title>
 </head>
 <body>
-<a href = "create.shop" class="btn btn-light">상품목록</a>
-<a href = "../cart/cartView.shop" style = "float:right;" class="btn btn-light"> 장바구니</a>
+<a href = "create.shop" class = "btn btn-primary">상품 등록</a>
+<a href = "../cart/cartView.shop" style = "float:right;" class = "btn btn-primary"> 장바구니</a>
 <table class = "table table-hover">
 	<caption>상품 목록</caption>
 	<tr>
@@ -36,11 +36,6 @@
 		</td>
 	</tr>
 	</core:forEach>
-	<tr>
-		<td colspan = "5">
-			<a href="create.shop" class = "btn btn-primary">상품 등록</a>
-		</td>
-	</tr>
 </table>
 </body>
 </html>

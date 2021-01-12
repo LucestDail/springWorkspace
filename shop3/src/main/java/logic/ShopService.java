@@ -50,4 +50,18 @@ public class ShopService {
 			e.printStackTrace();
 		}
 	}
+
+	public void itemUpdate(@Valid Item item, HttpServletRequest request) {
+		// TODO Auto-generated method stub
+		if(item.getPicture() != null && !item.getPicture().isEmpty()) {
+			uploadFileCreate(item.getPicture(),request,"img/");
+			item.setPictureUrl(item.getPicture().getOriginalFilename());
+		}
+		itemDao.update(item);
+	}
+
+	public void itemDelete(Integer id) {
+		// TODO Auto-generated method stub
+		itemDao.delete(id);
+	}
 }
