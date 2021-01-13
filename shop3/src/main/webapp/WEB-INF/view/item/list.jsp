@@ -11,7 +11,7 @@
 <a href = "create.shop" class = "btn btn-primary">상품 등록</a>
 <a href = "../cart/cartView.shop" style = "float:right;" class = "btn btn-primary"> 장바구니</a>
 <table class = "table table-hover">
-	<caption>상품 목록</caption>
+	<caption>${sessionScope.loginUser.username} 님의 상품목록</caption>
 	<tr>
 		<th width = "80">상품 ID</th>
 		<th width = "320">상품명</th>
@@ -36,6 +36,12 @@
 		</td>
 	</tr>
 	</core:forEach>
+	<tr>
+		<td colspan = "5" align = "center">
+			<input type="button" value="로그인화면" onclick="location.href='../user/login.shop'" class = "btn btn-primary">
+       		<input type="button" value="가입화면" onclick="location.href='../user/userEntry.shop'" class = "btn btn-primary">
+		</td>
+	</tr>
 </table>
 </body>
 </html>

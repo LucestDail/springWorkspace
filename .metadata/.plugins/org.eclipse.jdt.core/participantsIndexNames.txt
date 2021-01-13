@@ -7,6 +7,8 @@ C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.js
 \shop3\src\main\java
 C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2467690693.index
 \shop3\src\main\java
+C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\543136850.index
+\shop3\src\main\java
 C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1509073996.index
 \shop3\src\main\java
 C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\2276283756.index
@@ -19,3 +21,5 @@ C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.js
 \shop2\src\main\resources
 C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\1704085316.index
 \shop2\src\main\java
+C:\Users\dhtmd\myworkspace\springWorkspace\.metadata\.plugins\org.eclipse.jst.jsp.core\jspsearch\354788923.index
+\shop3\src\main\java
