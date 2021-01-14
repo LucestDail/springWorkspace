@@ -3,6 +3,7 @@ package controller;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -24,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import logic.Item;
+import logic.Sale;
+import logic.SaleItem;
 import logic.ShopService;
 import logic.User;
 
@@ -45,15 +49,15 @@ public class UserController {
 	@PostMapping("userEntry")
 	public ModelAndView create(@Valid User user, BindingResult bindingResult) {
 		ModelAndView mav = new ModelAndView();
-		if(bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			mav.getModel().putAll(bindingResult.getModel());
 			bindingResult.reject("error.input.user");
 			return mav;
 		}
 		try {
 			service.insertUser(user);
-			mav.addObject("user",user);
-		}catch(DataIntegrityViolationException e) {
+			mav.addObject("user", user);
+		} catch (DataIntegrityViolationException e) {
 			mav.getModel().putAll(bindingResult.getModel());
 			bindingResult.reject("error.duplicate.user");
 			return mav;
@@ -62,6 +66,7 @@ public class UserController {
 		mav.setViewName("redirect:login.shop");
 		return mav;
 	}
+
 	@GetMapping("login")
 	public ModelAndView userLoginForm() {
 		ModelAndView mav = new ModelAndView();
@@ -69,33 +74,33 @@ public class UserController {
 		mav.addObject(u);
 		return mav;
 	}
-	
+
 	@PostMapping("login")
 	public ModelAndView login(@Valid User user, BindingResult bindingResult, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
-		if(bindingResult.hasFieldErrors("userid") || bindingResult.hasFieldErrors("password")) {
+		if (bindingResult.hasFieldErrors("userid") || bindingResult.hasFieldErrors("password")) {
 			mav.getModel().putAll(bindingResult.getModel());
 			bindingResult.reject("error.input.user");
 			return mav;
 		}
 		try {
 			User dbuser = service.getUserById(user.getUserid());
-			if(dbuser==null) {
+			if (dbuser == null) {
 				bindingResult.reject("error.login.id");
 				mav.getModel().putAll(bindingResult.getModel());
 				return mav;
-			}else {
+			} else {
 				System.out.println("is not null now");
-				if(user.getPassword().equals(dbuser.getPassword())) {
+				if (user.getPassword().equals(dbuser.getPassword())) {
 					session.setAttribute("loginUser", dbuser);
 //					mav.setViewName("user/loginsuccess");
-				}else {
+				} else {
 					bindingResult.reject("error.login.password");
 					mav.getModel().putAll(bindingResult.getModel());
 					return mav;
 				}
 			}
-		}catch(DataIntegrityViolationException e) {
+		} catch (DataIntegrityViolationException e) {
 			e.printStackTrace();
 			bindingResult.reject("error.login.user");
 			mav.getModel().putAll(bindingResult.getModel());
@@ -105,48 +110,94 @@ public class UserController {
 		mav.setViewName("redirect:main.shop");
 		return mav;
 	}
-	
-	@GetMapping("main")
-	public ModelAndView mainForm() {
-		ModelAndView mav = new ModelAndView();
-		User u = new User();
-		mav.addObject(u);
-		return mav;
+
+//	@GetMapping("main")
+//	public ModelAndView main() {
+//		ModelAndView mav = new ModelAndView();
+//		User u = new User();
+//		mav.addObject(u);
+//		return mav;
+//	}
+
+	@RequestMapping("main")
+	public String loginCheckMain(HttpSession session) {
+		return null;
 	}
-	
-	@GetMapping("logout")
-	public ModelAndView logout(HttpSession session) {
+
+	@RequestMapping("logout")
+	public ModelAndView loginChecklogout(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		session.invalidate();
 		mav.setViewName("redirect:login.shop");
 		return mav;
 	}
-	
-	@GetMapping({"mypage","userupdate"})
-	public ModelAndView myPageForm(String id) {
+
+	@GetMapping("mypage")
+	public ModelAndView idCheckMypage(String id, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		User user = null;
+		user = service.getUserById(id);
+		List<Sale> salelist = service.salelist(id);
+		for (Sale sale : salelist) {
+			List<SaleItem> saleitemlist = service.saleItemList(sale.getSaleid());
+			for (SaleItem saleitem : saleitemlist) {
+				Item item = service.getItem(Integer.parseInt(saleitem.getItemid()));
+				saleitem.setItem(item);
+			}
+			sale.setItemList(saleitemlist);
+		}
+		mav.addObject("user", user);
+		mav.addObject("salelist", salelist);
+		return mav;
+	}
+
+	@GetMapping("update")
+	public ModelAndView idCheckUpdate(String id, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		User user = null;
 		try {
 			user = service.getUserById(id);
-		}catch(EmptyResultDataAccessException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		mav.addObject("user",user);
+		mav.addObject("user", user);
 		return mav;
 	}
-	
-	@PostMapping("userUpdate")
-	public ModelAndView userUpdate(@Valid User user, BindingResult bindingResult) {
+
+	@PostMapping("update")
+	public ModelAndView passCheckUpdate(@Valid User user, BindingResult bindingResult, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
+		if (bindingResult.hasErrors()) {
+			mav.getModel().putAll(bindingResult.getModel());
+			bindingResult.reject("error.input.user");
+			return mav;
+		}
+
 		User dbuser = null;
-//		try {
-//			user = service.getUserById(request);
-//		}catch(EmptyResultDataAccessException e) {
-//			e.printStackTrace();
-//		}
-		mav.addObject("user",user);
+		if (((User) session.getAttribute("loginUser")).getUserid().equals("admin")) {
+
+			dbuser = service.getUserById("admin");
+			if (!dbuser.getPassword().equals(user.getPassword())) {
+
+				bindingResult.reject("error.login.password");
+				mav.getModel().putAll(bindingResult.getModel());
+				return mav;
+			}
+		} else {
+
+			dbuser = service.getUserById(user.getUserid());
+			if (!dbuser.getPassword().equals(user.getPassword())) {
+
+				bindingResult.reject("error.login.password");
+				mav.getModel().putAll(bindingResult.getModel());
+				return mav;
+			}
+		}
+
+		service.updateUser(user);
+		mav.addObject("user", user);
+		mav.setViewName("redirect:mypage.shop?id=" + user.getUserid());
 		return mav;
 	}
-	
-	
+
 }

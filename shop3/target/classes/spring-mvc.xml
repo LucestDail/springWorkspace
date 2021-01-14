@@ -18,10 +18,10 @@
 	<bean
 		class="org.springframework.web.servlet.mvc.support.ControllerClassNameHandlerMapping" />
 	<context:component-scan
-		base-package="controller,logic,dao" /><!-- controller, logic, dao 패키지 클래스 
+		base-package="controller,logic,dao,aop" /><!-- controller, logic, dao 패키지 클래스 
 		중 @Component 어노테이션 클래스 객체화 -->
 	<mvc:annotation-driven /><!-- web 환경에서 사용되는 어노테이션 설정 -->
-	<!-- <aop:aspectj-autoproxy /> -->
+	<aop:aspectj-autoproxy />
 
 	<!-- viewer -->
 	<bean id="viewResolver"
@@ -53,6 +53,8 @@
 		<property name="exceptionMappings">
 			<value>
 				exception.CartEmptyException=exception
+				exception.LoginException=exception
+				exception.IdException=exception
 			</value>
 		</property>
 	</bean>

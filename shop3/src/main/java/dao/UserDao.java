@@ -48,4 +48,11 @@ public class UserDao {
 		String sql = "insert into useraccount (userid, username, password, birthday, phoneno, postcode, address, email) values (:userid, :username, :password, :birthday, :phoneno, :postcode, :address, :email)";
 		template.update(sql, param);
 	}
+
+	public void update(User user) {
+		// TODO Auto-generated method stub
+		SqlParameterSource param = new BeanPropertySqlParameterSource(user);
+		String sql = "update useraccount set username=:username, birthday=:birthday, phoneno=:phoneno, postcode=:postcode, address=:address, email=:email where userid=:userid";
+		template.update(sql, param);
+	}
 }

@@ -1,6 +1,7 @@
 package logic;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -80,5 +81,20 @@ public class ShopService {
 	public User getUserById(String id) {
 		System.out.println("ShopService - getUserById" + id);
 		return userDao.selectOne(id);
+	}
+
+	public List<Sale> salelist(String id) {
+		// TODO Auto-generated method stub
+		return new ArrayList<Sale>();
+	}
+
+	public List<SaleItem> saleItemList(int saleid) {
+		// TODO Auto-generated method stub
+		return new ArrayList<SaleItem>();
+	}
+
+	public void updateUser(User user) {
+		// TODO Auto-generated method stub
+		userDao.update(user);
 	}
 }

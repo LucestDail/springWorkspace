@@ -36,12 +36,6 @@
 		</td>
 	</tr>
 	</core:forEach>
-	<tr>
-		<td colspan = "5" align = "center">
-			<input type="button" value="로그인화면" onclick="location.href='../user/login.shop'" class = "btn btn-primary">
-       		<input type="button" value="가입화면" onclick="location.href='../user/userEntry.shop'" class = "btn btn-primary">
-		</td>
-	</tr>
 </table>
 </body>
 </html>
