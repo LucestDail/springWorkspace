@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>유저 정보 수정</title>
+<script type = "text/javascript">
+function win_passchg(){
+	var op = "width = 500, height=250, left=50, top=150";
+	open("passwordform.shop","",op);
+}
+</script>
 </head>
 <body>
 <form:form modelAttribute="user" method="post" action="update.shop">
@@ -95,6 +101,7 @@
                 <input type="submit" value="수정하기" class = "btn btn-primary">
                 <input type="reset" value="초기화" class = "btn btn-primary">
                 <input type="button" value="돌아가기" onclick="location.href='mypage.shop?id=${user.userid}'" class = "btn btn-primary">
+                <input type="button" value="비밀번호수정" onclick="win_passchg()" class = "btn btn-primary">
             </td>
         </tr>
     </table>

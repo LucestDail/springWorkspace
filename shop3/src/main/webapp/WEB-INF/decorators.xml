@@ -8,8 +8,8 @@
 	</decorator>
 	<!-- excluding sitemesh layout configuration -->
 	<excludes>
-		<pattern>
-		
-		</pattern>
+		<pattern>/user/id*</pattern>
+		<pattern>/user/pw*</pattern>
+		<pattern>/user/password*</pattern>
 	</excludes>
 </decorators>

@@ -22,17 +22,14 @@ public class ShopService {
 	private UserDao userDao;
 
 	public List<Item> getItemList() {
-		// TODO Auto-generated method stub
 		return itemDao.list();
 	}
 
 	public Item getItem(Integer id) {
-		// TODO Auto-generated method stub
 		return itemDao.selectOne(id);
 	}
 
 	public void itemCreate(Item item, HttpServletRequest request) {
-		// TODO Auto-generated method stub
 		if (item.getPicture() != null && !item.getPicture().isEmpty()) {
 			uploadFileCreate(item.getPicture(), request, "img/");
 			item.setPictureUrl(item.getPicture().getOriginalFilename());
@@ -41,7 +38,6 @@ public class ShopService {
 	}
 
 	private void uploadFileCreate(MultipartFile picture, HttpServletRequest request, String path) {
-		// TODO Auto-generated method stub
 		String orgFile = picture.getOriginalFilename();
 		String uploadPath = request.getServletContext().getRealPath("/") + path;
 		File fpath = new File(uploadPath);
@@ -56,7 +52,6 @@ public class ShopService {
 	}
 
 	public void itemUpdate(@Valid Item item, HttpServletRequest request) {
-		// TODO Auto-generated method stub
 		if (item.getPicture() != null && !item.getPicture().isEmpty()) {
 			uploadFileCreate(item.getPicture(), request, "img/");
 			item.setPictureUrl(item.getPicture().getOriginalFilename());
@@ -65,7 +60,6 @@ public class ShopService {
 	}
 
 	public void itemDelete(Integer id) {
-		// TODO Auto-generated method stub
 		itemDao.delete(id);
 	}
 
@@ -74,7 +68,6 @@ public class ShopService {
 	}
 
 	public void insertUser(User user) {
-		// TODO Auto-generated method stub
 		userDao.insert(user);
 	}
 
@@ -84,17 +77,39 @@ public class ShopService {
 	}
 
 	public List<Sale> salelist(String id) {
-		// TODO Auto-generated method stub
 		return new ArrayList<Sale>();
 	}
 
 	public List<SaleItem> saleItemList(int saleid) {
-		// TODO Auto-generated method stub
 		return new ArrayList<SaleItem>();
 	}
 
 	public void updateUser(User user) {
-		// TODO Auto-generated method stub
 		userDao.update(user);
+	}
+
+	public void deleteUser(String userid) {
+		userDao.delete(userid);
+	}
+
+	public List<User> userList(String[] idchks) {
+		List<User> list = new ArrayList<>();
+		for(String id : idchks) {
+			list.add(userDao.selectOne(id));
+		}
+		return list;
+	}
+
+	public User getUserByEmailTel(String email, String tel) {
+		return userDao.selectByEmailTel(email,tel);
+	}
+
+	public User getUserByIdEmailTel(String id, String email, String tel) {
+		return userDao.selectByIdEmailTel(id,email,tel);
+	}
+
+	public void chgpassUser(String sessionUserid, String chgpass) {
+		// TODO Auto-generated method stub
+		userDao.chgPass(sessionUserid,chgpass);
 	}
 }

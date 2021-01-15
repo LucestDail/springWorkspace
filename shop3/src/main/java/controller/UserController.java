@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import exception.LoginException;
+import exception.RedirectException;
 import logic.Item;
 import logic.Sale;
 import logic.SaleItem;
@@ -174,30 +176,190 @@ public class UserController {
 		}
 
 		User dbuser = null;
-		if (((User) session.getAttribute("loginUser")).getUserid().equals("admin")) {
+		User newUserSession = null;
+		if (((User) session.getAttribute("loginUser")).getUserid().equals("admin")) {//관리자가 시도
 
 			dbuser = service.getUserById("admin");
-			if (!dbuser.getPassword().equals(user.getPassword())) {
-
+			if (!dbuser.getPassword().equals(user.getPassword())) {//관리자인데 비밀번호 틀렸다.
 				bindingResult.reject("error.login.password");
 				mav.getModel().putAll(bindingResult.getModel());
 				return mav;
 			}
-		} else {
-
+		} else {//관리자가 아닐 경우 시도
 			dbuser = service.getUserById(user.getUserid());
-			if (!dbuser.getPassword().equals(user.getPassword())) {
-
+			if (!dbuser.getPassword().equals(user.getPassword())) {//관리자가 아닌데 비밀번호 틀렸다.
 				bindingResult.reject("error.login.password");
 				mav.getModel().putAll(bindingResult.getModel());
 				return mav;
 			}
 		}
-
+		//정상적으로 비밀번호 절차 실시 후
 		service.updateUser(user);
-		mav.addObject("user", user);
+		if(((User) session.getAttribute("loginUser")).getUserid().equals("admin") && user.getUserid().equals("admin")) {
+			//세션 정보도 관리자, 현재 파라매터 정보도 관리자 => 지금 바꾼 정보가 관리자 본인 정보다...
+			newUserSession = service.getUserById("admin");
+			session.setAttribute("loginUser", newUserSession);
+		}
+		if(((User) session.getAttribute("loginUser")).getUserid().equals(user.getUserid())) {
+			//세션 정보가 파라매터 정보와 같다 => 지금 바꾼 정보가 본인 정보다...
+			newUserSession = service.getUserById(user.getUserid());
+			session.setAttribute("loginUser", newUserSession);
+		}
+		mav.addObject("user", newUserSession);
 		mav.setViewName("redirect:mypage.shop?id=" + user.getUserid());
 		return mav;
 	}
-
+	
+	@GetMapping("delete")
+	public ModelAndView idCheckdelete(String id, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		User user = null;
+		try {
+			user = service.getUserById(id);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		mav.addObject("user", user);
+		return mav;
+	}
+	/**
+	 * 본인 탈퇴 : 본인 비밀번호 검증 -> session정보 제거(로그아웃)-> 로그인페이지로 이동
+	 * 관리자 탈퇴 : 관리자 비밀번호 검증 -> ../admin/list.shop으로 이동
+	 * 단, 관리자 본인은 탈퇴 불가능
+	 * @param user
+	 * @param bindingResult
+	 * @param session
+	 * @return
+	 */
+	//goodee recommand
+	@PostMapping("delete")
+	public ModelAndView idCheckdelete(String userid, HttpSession session,String password) {
+		ModelAndView mav = new ModelAndView();
+		User loginUser = (User)session.getAttribute("loginUser");
+		if(userid.equals("admin")) {
+			throw new LoginException("관리자 탈퇴 불가","main.shop");
+		}
+		if(!password.equals(loginUser.getPassword())) {
+			throw new LoginException("탈퇴시 비밀번호가 틀립니다.","delete.shop?id="+userid);
+		}
+		try {
+			service.deleteUser(userid);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw new LoginException("탈퇴시 오류가 발생했습니다.","delete.shop?id="+userid);
+		}
+		// 탈퇴 이후
+		if(loginUser.getUserid().equals("admin")) {
+			mav.setViewName("redirect:/admin/list.shop");
+		}else {
+//			mav.setViewName("redirect:logout.shop");
+			session.invalidate();
+			throw new LoginException(userid + "회원님의 탈퇴 처리가 완료되었습니다.","login.shop");
+		}
+		return mav;
+	}
+	
+	
+	@PostMapping("userdelete")
+	public ModelAndView userdelete(/* @Valid */ User user, /* BindingResult bindingResult, */ HttpSession session) {
+		System.out.println("current user : " + user.getUserid() + "," + user.getPassword());
+		ModelAndView mav = new ModelAndView();
+//		if (bindingResult.hasFieldErrors("password")) {
+//			mav.getModel().putAll(bindingResult.getModel());
+//			bindingResult.reject("error.input.user");
+//			return mav;
+//		}
+		User dbuser = null;
+		if (((User) session.getAttribute("loginUser")).getUserid().equals("admin")) {
+			//시도 대상 : 관리자
+			dbuser = service.getUserById("admin");
+			if (!dbuser.getPassword().equals(user.getPassword())) {
+				//관리자 비밀번호 오류
+//				bindingResult.reject("error.login.password");
+//				mav.getModel().putAll(bindingResult.getModel());
+				mav.setViewName("redirect:delete.shop?id="+user.getUserid());
+				return mav;
+			}else {
+				//관리자 비밀번호 정답
+				if(user.getUserid().equals("admin")) {
+					//지우려는 대상이 관리자인 경우
+//					bindingResult.reject("error.admin.delete");
+//					mav.getModel().putAll(bindingResult.getModel());
+					mav.setViewName("redirect:../admin/list.shop");
+				}else {
+					//관리자 -> 일반유저 삭제
+					service.deleteUser(user.getUserid());
+					mav.setViewName("redirect:../admin/list.shop");
+				}
+			}
+		} else {
+			//시도 대상 : 일반 유저
+			dbuser = service.getUserById(user.getUserid());
+			if (!dbuser.getPassword().equals(user.getPassword())) {
+				//일반 유저 비밀번호 오류
+//				bindingResult.reject("error.login.password");
+//				mav.getModel().putAll(bindingResult.getModel());
+				mav.setViewName("redirect:delete.shop?id="+user.getUserid());
+				return mav;
+			}else {
+				//일반유저 비밀번호 정답
+				service.deleteUser(user.getUserid());
+				session.invalidate();
+				mav.setViewName("redirect:login.shop");
+			}
+		}
+		return mav;
+	}
+	
+	@GetMapping("idform")
+	public ModelAndView idform() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	
+	@PostMapping("id")
+	public ModelAndView idsearch(String email, String tel) {
+		ModelAndView mav = new ModelAndView();
+		User user = service.getUserByEmailTel(email,tel);
+		mav.addObject("id",user.getUserid());
+		return mav;
+	}
+	
+	@GetMapping("pwform")
+	public ModelAndView pwform() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	@PostMapping("pw")
+	public ModelAndView pwsearch(String id, String email, String tel) {
+		ModelAndView mav = new ModelAndView();
+		User user = service.getUserByIdEmailTel(id,email,tel);
+		String returnPassValue = user.getPassword().substring(0,2) + "**";
+		mav.addObject("pass",returnPassValue);
+		return mav;
+	}
+	
+	@GetMapping("passwordform")
+	public ModelAndView passwordform() {
+		ModelAndView mav = new ModelAndView();
+		return mav;
+	}
+	
+	@PostMapping("passwordform")
+	public ModelAndView passwordchg(String pass, String chgpass, String chgpass2, HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		String sessionUserid = ((User)session.getAttribute("loginUser")).getUserid();
+		if(!pass.equals(service.getUserById(sessionUserid).getPassword())) {
+			throw new RedirectException("현재 비밀번호가 기존 비밀번호와 다릅니다.","window.close()");
+		}else if(!chgpass.equals(chgpass2)) {
+			throw new RedirectException("변경 비밀번호와 변경 비밀번호 재입력이 다릅니다.","window.close()");
+		}else if(pass.equals(chgpass)){
+			throw new RedirectException("현재 비밀번호와 변경 비밀번호가 같습니다.","window.close()");
+		}else {
+			service.chgpassUser(sessionUserid,chgpass);
+			User newuser = service.getUserById(sessionUserid);
+			session.setAttribute("loginUser", newuser);
+			throw new RedirectException("비밀번호가 변경되었습니다!","window.close()");
+		}
+	}	
 }

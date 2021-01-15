@@ -6,9 +6,15 @@
 <head>
 <meta charset="UTF-8">
 <title>로그인 화면</title>
+<script type = "text/javascript">
+function win_open(page){
+	var op = "width = 500, height=350, left=50, top=150";
+	open(page + ".shop","",op);
+}
+</script>
 </head>
 <body>
-<form:form modelAttribute = "user" method = "post" action = "login.shop">
+<form:form modelAttribute = "user" method = "post" action = "login.shop" name="f">
 	<spring:hasBindErrors name="user">
 		<font color = "red">
 			<core:forEach items = "${errors.globalErrors}" var = "error">
@@ -40,6 +46,8 @@
 			<td colspan = "2" align = "center">
 				<input type = "submit" value = "로그인" class = "btn btn-primary">
 				<input type = "button" value = "회원가입" onclick = "location.href = 'userEntry.shop'" class = "btn btn-primary">
+				<input type = "button" value = "아이디찾기" class = "btn btn-primary" onclick = "win_open('idform')">
+				<input type = "button" value = "비밀번호찾기" class = "btn btn-primary" onclick = "win_open('pwform')">
 			</td>
 		</tr>
 	</table>

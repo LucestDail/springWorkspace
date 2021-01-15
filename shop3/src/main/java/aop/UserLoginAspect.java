@@ -24,7 +24,7 @@ public class UserLoginAspect {
 		return joinPoint.proceed();
 	}
 	
-	@Around("execution(* controller.User*.idCheck*(..)) && args(..,id,session)")
+	@Around("execution(* controller.User*.idCheck*(..)) && args(id,session,..)")
 	public Object userIdCheck(ProceedingJoinPoint joinPoint, String id, HttpSession session) throws Throwable{
 		User loginUser = (User) session.getAttribute("loginUser");
 		if(loginUser == null) {

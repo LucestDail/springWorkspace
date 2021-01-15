@@ -55,4 +55,62 @@ public class UserDao {
 		String sql = "update useraccount set username=:username, birthday=:birthday, phoneno=:phoneno, postcode=:postcode, address=:address, email=:email where userid=:userid";
 		template.update(sql, param);
 	}
+
+	public void delete(String userid) {
+		// TODO Auto-generated method stub
+		Map<String, String> param = new HashMap<>();
+		param.put("userid", userid);
+		String sql = "delete from useraccount where userid =:userid";
+		try {
+			template.query(sql, param, mapper);
+		}catch(EmptyResultDataAccessException e) {
+			System.out.println("error occured while delete -> check information : " + userid);
+			e.printStackTrace();
+		}
+	}
+
+	public User selectByEmailTel(String email, String tel) {
+		Map<String, String> param = new HashMap<>();
+		param.put("email",email);
+		param.put("phoneno", tel);
+		String sql = "select * from useraccount where email=:email and phoneno=:phoneno";
+		User user = null;
+		try {
+			user = template.queryForObject(sql, param, mapper);
+		}catch(EmptyResultDataAccessException e) {
+			System.out.println("error occured while delete -> check information : " + param);
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public User selectByIdEmailTel(String id, String email, String tel) {
+		Map<String, String> param = new HashMap<>();
+		param.put("email",email);
+		param.put("phoneno", tel);
+		param.put("userid", id);
+		String sql = "select * from useraccount where email=:email and phoneno=:phoneno and userid=:userid";
+		User user = null;
+		try {
+			user = template.queryForObject(sql, param, mapper);
+		}catch(EmptyResultDataAccessException e) {
+			System.out.println("error occured while delete -> check information : " + param);
+			e.printStackTrace();
+		}
+		return user;
+	}
+
+	public void chgPass(String sessionUserid, String chgpass) {
+		// TODO Auto-generated method stub
+		Map<String, String> param = new HashMap<>();
+		param.put("userid",sessionUserid);
+		param.put("password", chgpass);
+		String sql = "update useraccount set password=:password where userid=:userid";
+		try {
+			template.query(sql, param, mapper);
+		}catch(EmptyResultDataAccessException e) {
+			System.out.println("error occured while delete -> check information : " + sessionUserid);
+			e.printStackTrace();
+		}
+	}
 }
