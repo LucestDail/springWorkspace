@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -20,9 +21,11 @@ import org.springframework.validation.Validator;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import exception.LoginException;
@@ -92,7 +95,6 @@ public class UserController {
 				mav.getModel().putAll(bindingResult.getModel());
 				return mav;
 			} else {
-				System.out.println("is not null now");
 				if (user.getPassword().equals(dbuser.getPassword())) {
 					session.setAttribute("loginUser", dbuser);
 //					mav.setViewName("user/loginsuccess");
@@ -314,13 +316,74 @@ public class UserController {
 	@GetMapping("idform")
 	public ModelAndView idform() {
 		ModelAndView mav = new ModelAndView();
+		User u = new User();
+		mav.addObject(u);
 		return mav;
 	}
+	
+	@GetMapping({"pwsearch","idsearch"})
+	public ModelAndView formview() {
+		ModelAndView mav = new ModelAndView();
+		User u = new User();
+		mav.addObject(u);
+		return mav;
+	}
+	@PostMapping("{url}search")
+	public ModelAndView search(User user, BindingResult bindingResult, @PathVariable String url) {
+		ModelAndView mav = new ModelAndView();
+		System.out.println(user.getUserid() + "," + user.getEmail() + "," + user.getPhoneno());
+		String code = "error.userid.search";
+		String title = "아이디";
+		if(url.equals("pw")) { //url pw 포함시 pwsearch 이므로 id 확인, 없을 경우 bindingresult reject value
+			code = "error.password.search";
+			title = "비밀번호";
+			if(user.getUserid() == null || user.getUserid().equals("")) {
+				bindingResult.rejectValue("userid", "error.required");
+			}
+		}
+		if(user.getEmail() == null || user.getEmail().equals("")) {
+			bindingResult.rejectValue("email", "error.required");
+		}
+		if(user.getPhoneno() == null || user.getPhoneno().equals("")) {
+			bindingResult.rejectValue("phoneno", "error.required");
+		}
+		if(bindingResult.hasErrors()) {
+			mav.getModel().putAll(bindingResult.getModel());
+			return mav;
+		}
+//		return mav;
+		if(user.getUserid() != null && user.getUserid().equals("")) {
+			user.setUserid(null);
+		}
+		String result = null;
+		try {
+			result = service.getSearch(user);
+		}catch(EmptyResultDataAccessException e) {
+			bindingResult.reject(code);
+			e.printStackTrace();
+			return mav;
+		}
+		mav.addObject("result",result);
+		mav.addObject("title",title);
+		if(url.equals("pw")) {
+			mav.addObject("pass",result.substring(0,2) + "**");
+			mav.setViewName("user/pw");
+			return mav;
+		}
+		mav.addObject("id",result);
+		mav.setViewName("user/id");
+		return mav;
+		
+	}
+	
 	
 	@PostMapping("id")
 	public ModelAndView idsearch(String email, String tel) {
 		ModelAndView mav = new ModelAndView();
 		User user = service.getUserByEmailTel(email,tel);
+		if(user == null) {
+			throw new RedirectException("해당되는 정보가 없습니다","window.close()");
+		}
 		mav.addObject("id",user.getUserid());
 		return mav;
 	}
@@ -334,6 +397,9 @@ public class UserController {
 	public ModelAndView pwsearch(String id, String email, String tel) {
 		ModelAndView mav = new ModelAndView();
 		User user = service.getUserByIdEmailTel(id,email,tel);
+		if(user == null) {
+			throw new RedirectException("해당되는 정보가 없습니다","window.close()");
+		}
 		String returnPassValue = user.getPassword().substring(0,2) + "**";
 		mav.addObject("pass",returnPassValue);
 		return mav;
@@ -345,21 +411,40 @@ public class UserController {
 		return mav;
 	}
 	
+//	@PostMapping("passwordform")
+//	public ModelAndView passwordchg(String pass, String chgpass, String chgpass2, HttpSession session) {
+//		ModelAndView mav = new ModelAndView();
+//		String sessionUserid = ((User)session.getAttribute("loginUser")).getUserid();
+//		if(!pass.equals(service.getUserById(sessionUserid).getPassword())) {
+//			throw new RedirectException("현재 비밀번호가 기존 비밀번호와 다릅니다.","window.close()");
+//		}else if(!chgpass.equals(chgpass2)) {
+//			throw new RedirectException("변경 비밀번호와 변경 비밀번호 재입력이 다릅니다.","window.close()");
+//		}else if(pass.equals(chgpass)){
+//			throw new RedirectException("현재 비밀번호와 변경 비밀번호가 같습니다.","window.close()");
+//		}else {
+//			service.chgpassUser(sessionUserid,chgpass);
+//			User newuser = service.getUserById(sessionUserid);
+//			session.setAttribute("loginUser", newuser);
+//			throw new RedirectException("비밀번호가 변경되었습니다!","window.close()");
+//		}
+//	}
+	
 	@PostMapping("passwordform")
-	public ModelAndView passwordchg(String pass, String chgpass, String chgpass2, HttpSession session) {
+	//Param 이 여러개일 경우 Map 으로 받아올 수 있습니다! (requestParam : value) 순으로 key-value 형식 맵핑
+	public ModelAndView passwordchg(@RequestParam Map<String, String> param, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		String sessionUserid = ((User)session.getAttribute("loginUser")).getUserid();
-		if(!pass.equals(service.getUserById(sessionUserid).getPassword())) {
+		if(!param.get("pass").equals(service.getUserById(sessionUserid).getPassword())) {
 			throw new RedirectException("현재 비밀번호가 기존 비밀번호와 다릅니다.","window.close()");
-		}else if(!chgpass.equals(chgpass2)) {
+		}else if(!param.get("chgpass").equals(param.get("chgpass2"))) {
 			throw new RedirectException("변경 비밀번호와 변경 비밀번호 재입력이 다릅니다.","window.close()");
-		}else if(pass.equals(chgpass)){
+		}else if(param.get("pass").equals(param.get("chgpass"))){
 			throw new RedirectException("현재 비밀번호와 변경 비밀번호가 같습니다.","window.close()");
 		}else {
-			service.chgpassUser(sessionUserid,chgpass);
+			service.chgpassUser(sessionUserid,param.get("chgpass"));
 			User newuser = service.getUserById(sessionUserid);
 			session.setAttribute("loginUser", newuser);
 			throw new RedirectException("비밀번호가 변경되었습니다!","window.close()");
 		}
-	}	
+	}
 }

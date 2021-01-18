@@ -43,3 +43,9 @@
 1월 15, 2021 14:46:10.202 NEW SESSION
 1월 15, 2021 14:46:10.202 [28652:11204:0115/144610.192:ERROR:device_event_log_impl.cc(211)] [14:46:10.192] Bluetooth: bluetooth_adapter_winrt.cc:1073 Getting Default Adapter failed.
 1월 15, 2021 14:55:38.949 [0115/145538.947:ERROR:directory_reader_win.cc(43)] FindFirstFile: 지정된 경로를 찾을 수 없습니다. (0x3)
+
+1월 18, 2021 09:23:59.250 NEW SESSION
+1월 18, 2021 09:23:59.250 [15056:10568:0118/092359.248:ERROR:device_event_log_impl.cc(211)] [09:23:59.248] Bluetooth: bluetooth_adapter_winrt.cc:1073 Getting Default Adapter failed.
+1월 18, 2021 09:33:25.702 [0118/093325.701:ERROR:directory_reader_win.cc(43)] FindFirstFile: 지정된 경로를 찾을 수 없습니다. (0x3)
+1월 18, 2021 12:04:55.858 [15056:10568:0118/120455.858:ERROR:CONSOLE(0)] "The source list for Content Security Policy directive 'img-src' contains an invalid source: 'https://prod-periscope-profile.*.amazonaws.com'. It will be ignored.", source: https://twitter.com/ (0)
+1월 18, 2021 12:18:30.555 [15056:10568:0118/121830.555:ERROR:CONSOLE(0)] "The source list for Content Security Policy directive 'img-src' contains an invalid source: 'https://prod-periscope-profile.*.amazonaws.com'. It will be ignored.", source: https://twitter.com/ (0)

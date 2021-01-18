@@ -72,7 +72,6 @@ public class ShopService {
 	}
 
 	public User getUserById(String id) {
-		System.out.println("ShopService - getUserById" + id);
 		return userDao.selectOne(id);
 	}
 
@@ -111,5 +110,17 @@ public class ShopService {
 	public void chgpassUser(String sessionUserid, String chgpass) {
 		// TODO Auto-generated method stub
 		userDao.chgPass(sessionUserid,chgpass);
+	}
+
+	public String getSearch(User user) {
+		// TODO Auto-generated method stub
+		System.out.println(user + " -> activate");
+		String result = null;
+		if(user.getUserid() != null) {
+			result = userDao.selectByIdEmailTel(user.getUserid(),user.getEmail(),user.getPhoneno()).getPassword();
+		}else {
+			result = userDao.selectByEmailTel(user.getEmail(),user.getPhoneno()).getUserid();
+		}
+		return result;
 	}
 }

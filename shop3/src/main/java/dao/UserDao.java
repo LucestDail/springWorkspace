@@ -79,7 +79,7 @@ public class UserDao {
 			user = template.queryForObject(sql, param, mapper);
 		}catch(EmptyResultDataAccessException e) {
 			System.out.println("error occured while delete -> check information : " + param);
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return user;
 	}
@@ -95,7 +95,7 @@ public class UserDao {
 			user = template.queryForObject(sql, param, mapper);
 		}catch(EmptyResultDataAccessException e) {
 			System.out.println("error occured while delete -> check information : " + param);
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 		return user;
 	}
@@ -110,7 +110,7 @@ public class UserDao {
 			template.query(sql, param, mapper);
 		}catch(EmptyResultDataAccessException e) {
 			System.out.println("error occured while delete -> check information : " + sessionUserid);
-			e.printStackTrace();
+//			e.printStackTrace();
 		}
 	}
 }

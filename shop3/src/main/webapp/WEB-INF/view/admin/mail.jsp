@@ -23,7 +23,7 @@
 </script>
 </head>
 <body>
-<form name = "mailform" method="post" action="mail.shop" enctype="multipart/form-date" onsubmit="return idinputchk(this)">
+<form name = "mailform" method="post" action="mail.shop" enctype="multipart/form-data" onsubmit="return idinputchk(this)">
 <table class = "table">
 	<caption>메일 보내기</caption>
 	<tr>
@@ -39,7 +39,7 @@
 			네이버 PW
 		</th>
 		<td>
-			<input type = "text" name = "naverpw" class = "form-control">
+			<input type = "password" name = "naverpw" class = "form-control">
 		</td>
 	</tr>
 	<tr>
@@ -82,7 +82,7 @@
 	<tr>
 		<th>첨부파일2</th>
 		<td>
-			<input type="file" name="file2" class="form-control">
+			<input type="file" name="file1" class="form-control">
 		</td>
 	</tr>
 	<tr>

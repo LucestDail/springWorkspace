@@ -31,5 +31,9 @@ public class Cart {
 		System.out.println("delete activated" + index);
 		itemSetList.remove(index);
 	}
+	@Override
+	public String toString() {
+		return "Cart [itemSetList=" + itemSetList + "]";
+	}
 
 }

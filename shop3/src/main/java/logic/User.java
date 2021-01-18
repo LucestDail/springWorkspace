@@ -17,6 +17,7 @@ public class User {
 	private String password;
 	@NotEmpty(message="사용자 이름은 필수 입니다.")
 	private String username;
+	@NotEmpty(message="전화번호가 비어있습니다.")
 	private String phoneno;
 	private String postcode;
 	private String address;

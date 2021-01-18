@@ -46,8 +46,10 @@ function win_open(page){
 			<td colspan = "2" align = "center">
 				<input type = "submit" value = "로그인" class = "btn btn-primary">
 				<input type = "button" value = "회원가입" onclick = "location.href = 'userEntry.shop'" class = "btn btn-primary">
-				<input type = "button" value = "아이디찾기" class = "btn btn-primary" onclick = "win_open('idform')">
-				<input type = "button" value = "비밀번호찾기" class = "btn btn-primary" onclick = "win_open('pwform')">
+				<input type = "button" value = "아이디찾기(a)" class = "btn btn-primary" onclick = "win_open('idform')">
+				<input type = "button" value = "비밀번호찾기(a)" class = "btn btn-primary" onclick = "win_open('pwform')">
+				<input type = "button" value = "아이디찾기(v)" class = "btn btn-primary" onclick = "win_open('idsearch')">
+				<input type = "button" value = "비밀번호찾기(v)" class = "btn btn-primary" onclick = "win_open('pwsearch')">
 			</td>
 		</tr>
 	</table>
