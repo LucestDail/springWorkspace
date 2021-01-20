@@ -209,4 +209,20 @@ public class ShopService {
 	public int boardMaxGrp() {
 		return boardDao.maxGrp();
 	}
+
+	public boolean boardDelete(Board board) {
+		return boardDao.delete(board);
+	}
+
+	public int boardUpdate(Board board, HttpServletRequest request) {
+		if (board.getFile1() != null && !board.getFile1().isEmpty()) {
+			uploadFileCreate(board.getFile1(), request, "img/");
+			board.setFileurl(board.getFile1().getOriginalFilename());
+		}
+		return boardDao.update(board);
+	}
+
+	public int boardMaxGrpStep(Board board) {
+		return boardDao.maxGrpstep(board);
+	}
 }

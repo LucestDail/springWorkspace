@@ -5,24 +5,23 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>게시판 답글 쓰기</title>
+<title>게시물 수정</title>
 </head>
 <body>
-<form:form modelAttribute="board" action="reply.shop" enctype="multipart/form-data" name="f">
-	<form:hidden path="num"/>
-	<form:hidden path="grp"/>
-	<form:hidden path="grplevel"/>
-	<form:hidden path="grplevel"/>
-	<table class = "table">
-		<caption>게시판 답글 등록</caption>
+<form:form modelAttribute="board" action="update.shop" enctype="multipart/form-data" name="f">
+<form:hidden path="num" value="${param.num}"/>
+	<table class="table">
+		<caption>게시물 수정</caption>
 		<tr>
 			<th>
 				글쓴이
 			</th>
 			<td>
 				<form:input path="name" class="form-control" />
-				<font color = "red">
-					<form:errors path = "name"/>
+			</td>
+			<td>
+				<font color="red">
+					<form:errors path="name" />
 				</font>
 			</td>
 		</tr>
@@ -31,9 +30,11 @@
 				비밀번호
 			</th>
 			<td>
-				<form:password path = "pass" class = "form-control"/>
-				<font color = "red">
-					<form:errors path = "pass"/>
+				<form:password path="pass" class="form-control" />
+			</td>
+			<td>
+				<font color="red">
+					<form:errors path="pass" />
 				</font>
 			</td>
 		</tr>
@@ -42,9 +43,11 @@
 				제목
 			</th>
 			<td>
-				<form:input path="subject" value="RE:${board.subject}" class = "form-control"/>
-				<font color = "red">
-					<form:errors path = "subject"/>
+				<form:input path="subject" class="form-control" />
+			</td>
+			<td>
+				<font color="red">
+					<form:errors path="subject" />
 				</font>
 			</td>
 		</tr>
@@ -54,13 +57,15 @@
 			</th>
 			<td>
 				<form:textarea path="content" rows = "15" class="form-control" />
-				<font color = "red">
-					<form:errors path = "content"/>
+			</td>
+			<td>
+				<font color="red">
+					<form:errors path="content" />
 				</font>
 			</td>
 		</tr>
 		<script>
-			CKEDITOR.replace("content",{filebrowserImageUploadUrl : "imgupload.shop"});
+			CKEDITOR.replace("content")
 		</script>
 		<tr>
 			<th>
@@ -72,7 +77,8 @@
 		</tr>
 		<tr>
 			<td colspan = "2" align = "center">
-				<a href="javascript:document.f.submit()" class = "btn btn-primary">답변글등록</a>
+				<input type = "submit" value = "수정" class = "btn btn-primary">
+				<a href="list.shop" class="btn btn-primary">게시글 목록</a>
 			</td>
 		</tr>
 	</table>

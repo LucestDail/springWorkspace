@@ -34,7 +34,7 @@ public class BoardController {
 			searchtype = null;
 			searchcontent = null;
 		}
-		int limit = 5;
+		int limit = 10;
 		int listcount = service.boardcount(searchtype,searchcontent);
 		List<Board> boardlist = service.boardlist(pageNum, limit,searchtype, searchcontent);
 		int maxpage = (int)((double)listcount/limit + 0.95);
@@ -108,6 +108,66 @@ public class BoardController {
 		board.setNum(++curNum);
 		board.setGrp(++curgrp);
 		
+		if(service.boardWrite(board, request)>0) {
+			mav.setViewName("redirect:/board/list.shop");
+		}else {
+			throw new BoardException("게시물 등록 실패","../board/write.shop");
+		}
+		return mav;
+	}
+	
+	@PostMapping("delete")
+	public ModelAndView delete(@Valid Board board, BindingResult bindingResult) {
+		ModelAndView mav = new ModelAndView();
+		if(bindingResult.hasFieldErrors("pass")) {
+			mav.getModel().putAll(bindingResult.getModel());
+			return mav;
+		}
+		Board curBoard = service.getBoard(board.getNum(), false);
+		if(!curBoard.getPass().equals(board.getPass())) {
+			throw new BoardException("비밀번호가 다릅니다","../board/delete.shop?num="+board.getNum());
+		}else {
+			if(service.boardDelete(board)) {
+				mav.setViewName("redirect:/board/list.shop");
+			}else {
+				throw new BoardException("게시물 삭제 실패","../board/delete.shop?num="+board.getNum());
+			}
+		}
+		return mav;
+	}
+	
+	@PostMapping("update")
+	public ModelAndView update(@Valid Board board, BindingResult bindingResult,HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		if(bindingResult.hasErrors()) {
+			mav.getModel().putAll(bindingResult.getModel());
+			return mav;
+		}
+		Board curBoard = service.getBoard(board.getNum(), false);
+		if(!curBoard.getPass().equals(board.getPass())) {
+			throw new BoardException("비밀번호가 다릅니다","../board/update.shop?num="+board.getNum());
+		}else {
+			if(service.boardUpdate(board,request)>0) {
+				mav.setViewName("redirect:/board/detail.shop?num="+board.getNum());
+			}else {
+				throw new BoardException("게시물 수정 실패","../board/update.shop?num="+board.getNum());
+			}
+		}
+		return mav;
+	}
+	
+	@PostMapping("reply")
+	public ModelAndView reply(@Valid Board board, BindingResult bindingResult, HttpServletRequest request) {
+		ModelAndView mav = new ModelAndView();
+		if(bindingResult.hasErrors()) {
+			mav.getModel().putAll(bindingResult.getModel());
+			return mav;
+		}
+		Board curBoard = service.getBoard(board.getNum(), false);
+		board.setNum(service.boardMaxNum() + 1);
+		board.setGrplevel(curBoard.getGrplevel() + 1);
+		board.setGrpstep(service.boardMaxGrpStep(board) + 1);
+		System.out.println(board);
 		if(service.boardWrite(board, request)>0) {
 			mav.setViewName("redirect:/board/list.shop");
 		}else {

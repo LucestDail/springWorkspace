@@ -85,5 +85,23 @@ public class BoardDao {
 		return template.queryForObject(sql, param, Integer.class);
 	}
 
+	public boolean delete(Board board) {
+		String sql = "delete from board where num=:num";
+		SqlParameterSource prop = new BeanPropertySqlParameterSource(board);
+		return template.update(sql, prop)>0;
+	}
+
+	public int update(Board board) {
+		String sql = "update board set file1=:fileurl, name=:name, subject=:subject, content=:content where num=:num";
+		SqlParameterSource prop = new BeanPropertySqlParameterSource(board);
+		return template.update(sql, prop);
+	}
+
+	public int maxGrpstep(Board board) {
+		String sql = "SELECT ifnull(max(grpstep),0) FROM board WHERE grp=:grp AND grplevel=:grplevel";
+		SqlParameterSource prop = new BeanPropertySqlParameterSource(board);
+		return template.update(sql, prop);
+	}
+
 
 }
