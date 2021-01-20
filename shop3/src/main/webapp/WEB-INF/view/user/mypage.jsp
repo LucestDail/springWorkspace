@@ -12,6 +12,7 @@
 		$("#oinfo").hide();
 		$("#saleLine").each(function(){
 			$(this).hide();
+			$(this).toggle();
 		})
 		$("#tab1").addClass("select");
 	})
@@ -27,6 +28,7 @@
 	}
 	function list_disp(id){
 		$("#"+id).toggle(); //보였다 안보였다
+		console.log(id + "toggled");
 	}
 </script>
 <!-- <style type = "text/css">
@@ -64,7 +66,7 @@
 		<core:forEach items = "${salelist}" var = "sale" varStatus = "stat">
 			<tr>
 				<td align = "center">
-					<a href = "javascript:list_disp('saleLine${stat.index}'})">${sale.saleid}</a>
+					<a href = "javascript:list_disp('saleLine${stat.index}')">${sale.saleid}</a>
 				</td>
 				<td align = "center">
 					<fmt:formatDate value = "${sale.saledate}" pattern = "yyyy-MM-dd" />
@@ -143,6 +145,9 @@
 	</core:if>
 	<core:if test = "${loginUser.userid == 'admin' }">
 		<a href = "../admin/list.shop" class = "btn btn-primary">회원목록</a>
+	</core:if>
+	<core:if test = "${loginUser.userid == 'admin' }">
+		<a href = "../admin/endlist.shop" class = "btn btn-primary">주문목록</a>
 	</core:if>
 </div>
 </body>

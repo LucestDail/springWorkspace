@@ -15,9 +15,9 @@ import logic.User;
 @Component
 @Aspect
 @Order(1)
-public class CartLoginAspect {
-	@Around("execution(* controller.Cart*.loginCheck*(..)) && args(session)")
-	public Object cartLoginCheck(ProceedingJoinPoint joinPoint, HttpSession session) throws Throwable {
+public class CartAspect {
+	@Around("execution(* controller.Cart*.check*(..)) && args(..,session)")
+	public Object cartCheck(ProceedingJoinPoint joinPoint, HttpSession session) throws Throwable {
 		User loginUser = (User) session.getAttribute("loginUser");
 		Cart cart = (Cart) session.getAttribute("CART");
 		System.out.println("cartLogin checked");
@@ -26,8 +26,9 @@ public class CartLoginAspect {
 		}else {
 			System.out.println(loginUser);
 		}
-		if(cart == null) {
+		if(cart == null || cart.getItemSetList().size() == 0) {
 			throw new LoginException("[cartLogin]카트가 비어있습니다.","../item/list.shop");
+//			throw new CartEmptyException("주문할 상품이 장바구니에 없습니다.","../item/list.shop");
 		}else {
 			System.out.println(cart);
 		}

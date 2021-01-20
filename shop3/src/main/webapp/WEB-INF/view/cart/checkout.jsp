@@ -8,7 +8,7 @@
 <title>주문 전 상품 목록 보기</title>
 </head>
 <body>
-<table calss = "table">
+<table class = "table">
 	<caption>배송지 정보</caption>
 	<tr>
 		<td width = "30%">주문아이디</td>

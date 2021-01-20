@@ -123,7 +123,7 @@ public class AdminController {
 		
 		MimeBodyPart body = new MimeBodyPart();
 		String orgFile = mf.getOriginalFilename();
-		String path = "C:/Users/dhtmd/myworkspace/springWorkspace/shop3/src/main/resources/mailupload"; //메일 전송을 위한 업로드 파일 저장 폴더
+		String path = "C:/Users/dhtmd/myworkspace/springWorkspace/shop3/src/main/resources/mailupload/"; //메일 전송을 위한 업로드 파일 저장 폴더
 		File f = new File(path);
 		if(!f.exists()) {
 			f.mkdirs();

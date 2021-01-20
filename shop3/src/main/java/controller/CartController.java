@@ -12,7 +12,9 @@ import exception.CartEmptyException;
 import logic.Cart;
 import logic.Item;
 import logic.ItemSet;
+import logic.Sale;
 import logic.ShopService;
+import logic.User;
 
 @Controller @RequestMapping("cart")
 public class CartController {
@@ -63,9 +65,29 @@ public class CartController {
 //	}
 	
 	@GetMapping("checkout")
-	public ModelAndView loginCheckcheckout(HttpSession session) {
+	public ModelAndView checkout(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		return mav;
 	}
 	
+	@RequestMapping("end")
+	/**
+	 * 주문 확정 : 로그인 상태, 장바구니 상품 존재해야 접근 가능 => aop 설정(촏ㅊ
+	 * 1. 장바구니 상품(CART)을 saleitem 테이블에 저장
+	 * 2. 로그인 정보(loginUser)로 주문 정보(sale) 테이블에 저장
+	 * 3. 장바구니 상품 제거
+	 * @param session
+	 * @return
+	 */
+	public ModelAndView checkend(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		Cart cart = (Cart)session.getAttribute("CART");
+		User loginUser = (User)session.getAttribute("loginUser");
+		Sale sale = service.checkend(loginUser,cart);
+		long total = cart.getTotal();
+		session.removeAttribute("CART");
+		mav.addObject("sale",sale);
+		mav.addObject("total",total);
+		return mav;
+	}
 }
