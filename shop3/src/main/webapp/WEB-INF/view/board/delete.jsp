@@ -8,6 +8,35 @@
 <title>게시물 삭제</title>
 </head>
 <body>
+
+<form:form modelAttribute="board" action="delete.shop" method="post" name="f">
+<form:hidden path="num" />
+<spring:hasBindErrors name="board">
+	<font color="red">
+		<core:forEach items="${errors.globalErrors}" var="error">
+			<spring:message code="${error.code}"/>
+		</core:forEach>
+	</font>
+</spring:hasBindErrors>
+<input type="hidden" name="num" value="${board.num}">
+<table class = "table">
+	<caption>Spring 게시글 삭제</caption>
+	<tr>
+		<th>
+			비밀번호 입력
+		</th>
+		<td>
+			<form:password path="pass" class="form-control" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan = "2" align = "center">
+			<input type = "submit" value = "삭제" class = "btn btn-primary">
+		</td>
+	</tr>
+</table>
+</form:form>
+<!-- 
 <form:form modelAttribute="board" action="delete.shop" method="post">
 <form:hidden path = "num" value = "${param.num}"/>
 <table class = "table">
@@ -25,9 +54,10 @@
 	<tr>
 		<td colspan = "2" align = "center">
 			<input type = "submit" value = "삭제" class = "btn btn-primary">
-		</th>
+		</td>
 	</tr>
 </table>
 </form:form>
+-->
 </body>
 </html>

@@ -11,5 +11,6 @@
 		<pattern>/user/id*</pattern>
 		<pattern>/user/pw*</pattern>
 		<pattern>/user/password*</pattern>
+		<pattern>/board/imgupload*</pattern>
 	</excludes>
 </decorators>

@@ -1,18 +1,22 @@
 package controller;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import exception.BoardException;
@@ -119,11 +123,14 @@ public class BoardController {
 	@PostMapping("delete")
 	public ModelAndView delete(@Valid Board board, BindingResult bindingResult) {
 		ModelAndView mav = new ModelAndView();
-		if(bindingResult.hasFieldErrors("pass")) {
-			mav.getModel().putAll(bindingResult.getModel());
+		Board curBoard = service.getBoard(board.getNum(), false);
+		if(bindingResult.hasFieldErrors("pass") || !curBoard.getPass().equals(board.getPass()) ) {
+//			mav.getModel().putAll(bindingResult.getModel());
+//			return mav;
+			bindingResult.reject("error.login.password");
 			return mav;
 		}
-		Board curBoard = service.getBoard(board.getNum(), false);
+		
 		if(!curBoard.getPass().equals(board.getPass())) {
 			throw new BoardException("비밀번호가 다릅니다","../board/delete.shop?num="+board.getNum());
 		}else {
@@ -145,7 +152,7 @@ public class BoardController {
 		}
 		Board curBoard = service.getBoard(board.getNum(), false);
 		if(!curBoard.getPass().equals(board.getPass())) {
-			throw new BoardException("비밀번호가 다릅니다","../board/update.shop?num="+board.getNum());
+			throw new BoardException("비밀번호가 틀립니다","../board/update.shop?num="+board.getNum());
 		}else {
 			if(service.boardUpdate(board,request)>0) {
 				mav.setViewName("redirect:/board/detail.shop?num="+board.getNum());
@@ -160,7 +167,11 @@ public class BoardController {
 	public ModelAndView reply(@Valid Board board, BindingResult bindingResult, HttpServletRequest request) {
 		ModelAndView mav = new ModelAndView();
 		if(bindingResult.hasErrors()) {
-			mav.getModel().putAll(bindingResult.getModel());
+			Board dbBoard = service.getBoard(board.getNum(),false);
+			Map<String, Object> map = bindingResult.getModel();
+			Board b = (Board)map.get("board");
+			b.setSubject(dbBoard.getSubject());
+//			mav.getModel().putAll(bindingResult.getModel());
 			return mav;
 		}
 		Board curBoard = service.getBoard(board.getNum(), false);
@@ -176,5 +187,25 @@ public class BoardController {
 		return mav;
 	}
 	
+	@RequestMapping("imgupload")
+	public String imgupload(MultipartFile upload, String CKEditorFuncNum, HttpServletRequest request, Model model) {
+		String path = request.getServletContext().getRealPath("/") + "board/imgfile/";
+		File f = new File(path);
+		if(!f.exists()) {
+			f.mkdirs();
+		}
+		if(!upload.isEmpty()) {
+			File file = new File(path, upload.getOriginalFilename());
+			try {
+				upload.transferTo(file);
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+		}
+		String fileName = request.getContextPath() + "/board/imgfile/" + upload.getOriginalFilename();
+		model.addAttribute("fileName",fileName);
+		model.addAttribute("CKEditorFuncNum",CKEditorFuncNum);
+		return "ckedit";
+	}
 	
 }

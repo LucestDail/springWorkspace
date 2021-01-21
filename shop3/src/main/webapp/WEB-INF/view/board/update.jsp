@@ -6,6 +6,12 @@
 <head>
 <meta charset="UTF-8">
 <title>게시물 수정</title>
+<script>
+	function file_delete(){
+		document.f.fileurl.value = "";
+		file_desc.style.display = "none";
+	}
+</script>
 </head>
 <body>
 <form:form modelAttribute="board" action="update.shop" enctype="multipart/form-data" name="f">
@@ -65,13 +71,22 @@
 			</td>
 		</tr>
 		<script>
-			CKEDITOR.replace("content")
+			CKEDITOR.replace("content",{
+				filebrowserImageUploadUrl : "imgupload.shop"
+			})
 		</script>
 		<tr>
 			<th>
 				첨부파일
 			</th>
 			<td>
+				<core:if test="${!empty board.fileurl}">
+					<div id = "file_desc">
+						<a href="../img/${board.fileurl}">${board.fileurl}</a>
+						<a href="javascript:file_delete()">첨부파일 삭제</a>
+					</div>
+				</core:if>
+				<form:hidden path="fileurl"/>
 				<input type = "file" name = "file1" class="form-control-file">
 			</td>
 		</tr>
