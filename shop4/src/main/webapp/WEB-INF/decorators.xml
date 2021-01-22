@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- /WEB-INF/decorators.xml -->
+<decorators defaultdir="/layout">
+	<decorator page="layout.jsp" name="main">
+		<pattern>
+			*.shop
+		</pattern>
+	</decorator>
+	<!-- excluding sitemesh layout configuration -->
+	<excludes>
+		<pattern>/user/id*</pattern>
+		<pattern>/user/pw*</pattern>
+		<pattern>/user/password*</pattern>
+		<pattern>/board/imgupload*</pattern>
+	</excludes>
+</decorators>
