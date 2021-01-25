@@ -143,7 +143,6 @@ public class UserController {
 		}
 		mav.addObject("user", user);
 		mav.addObject("salelist", salelist);
-		System.out.println(salelist);
 		return mav;
 	}
 

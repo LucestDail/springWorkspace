@@ -1,13 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="exception.RedirectException"/>
-    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.PathVariable"/>
-    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RequestParam"/>
-    <fullyQualifiedTypeName name="logic.Mail"/>
-    <fullyQualifiedTypeName name="javax.mail.Authenticator"/>
-    <fullyQualifiedTypeName name="javax.mail.PasswordAuthentication"/>
-    <fullyQualifiedTypeName name="controller.AdminController.MyAuthenticator"/>
-    <fullyQualifiedTypeName name="java.util.Properties"/>
     <fullyQualifiedTypeName name="java.io.FileInputStream"/>
     <fullyQualifiedTypeName name="java.io.IOException"/>
     <fullyQualifiedTypeName name="javax.mail.Session"/>
@@ -30,7 +22,6 @@
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="org.springframework.dao.DataAccessException"/>
     <fullyQualifiedTypeName name="javax.naming.directory.SchemaViolationException"/>
-    <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="java.text.SimpleDateFormat"/>
     <fullyQualifiedTypeName name="java.util.Date"/>
     <fullyQualifiedTypeName name="logic.Board"/>
@@ -45,7 +36,6 @@
     <fullyQualifiedTypeName name="java.lang.RuntimeException"/>
     <fullyQualifiedTypeName name="exception.BoardException"/>
     <fullyQualifiedTypeName name="org.springframework.web.servlet.ModelAndView"/>
-    <fullyQualifiedTypeName name="java.util.Map"/>
     <fullyQualifiedTypeName name="org.springframework.ui.Model"/>
     <fullyQualifiedTypeName name="org.springframework.web.multipart.MultipartFile"/>
     <fullyQualifiedTypeName name="java.io.File"/>
@@ -60,4 +50,14 @@
     <fullyQualifiedTypeName name="org.springframework.web.socket.TextMessage"/>
     <fullyQualifiedTypeName name="org.springframework.web.socket.CloseStatus"/>
     <fullyQualifiedTypeName name="org.springframework.stereotype.Component"/>
+    <fullyQualifiedTypeName name="java.util.Map"/>
+    <fullyQualifiedTypeName name="java.util.List"/>
+    <fullyQualifiedTypeName name="logic.Item"/>
+    <fullyQualifiedTypeName name="dao.mapper.ItemMapper"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Insert"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Update"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Delete"/>
+    <fullyQualifiedTypeName name="org.mybatis.spring.SqlSessionTemplate"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Select"/>
+    <fullyQualifiedTypeName name="dao.mapper.UserMapper"/>
 </qualifiedTypeNameHistroy>
