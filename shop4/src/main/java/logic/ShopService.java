@@ -107,47 +107,47 @@ public class ShopService {
 
 	public List<User> userList(String[] idchks) {
 		List<User> list = new ArrayList<>();
-		for(String id : idchks) {
+		for (String id : idchks) {
 			list.add(userDao.selectOne(id));
 		}
 		return list;
 	}
 
 	public User getUserByEmailTel(String email, String tel) {
-		return userDao.selectByEmailTel(email,tel);
+		return userDao.selectByEmailTel(email, tel);
 	}
 
 	public User getUserByIdEmailTel(String id, String email, String tel) {
-		return userDao.selectByIdEmailTel(id,email,tel);
+		return userDao.selectByIdEmailTel(id, email, tel);
 	}
 
 	public void chgpassUser(String sessionUserid, String chgpass) {
-		userDao.chgPass(sessionUserid,chgpass);
+		userDao.chgPass(sessionUserid, chgpass);
 	}
 
 	public String getSearch(User user) {
 		System.out.println(user + " -> activate");
 		String result = null;
-		if(user.getUserid() != null) {
-			result = userDao.selectByIdEmailTel(user.getUserid(),user.getEmail(),user.getPhoneno()).getPassword();
-		}else {
-			result = userDao.selectByEmailTel(user.getEmail(),user.getPhoneno()).getUserid();
+		if (user.getUserid() != null) {
+			result = userDao.selectByIdEmailTel(user.getUserid(), user.getEmail(), user.getPhoneno()).getPassword();
+		} else {
+			result = userDao.selectByEmailTel(user.getEmail(), user.getPhoneno()).getUserid();
 		}
 		return result;
 	}
+
 	/**
-	 * sale 정보, saleitem 정보 db에 저장(dao)
-	 * 1. sale 테이블의 saleid값 가져오기 => 최대값보다 큰 값 지정
-	 * 2. sale 정보 저장(insert)
-	 * 3. Cart 정보에서 saleitem 내용 저장(insert)
-	 * 4. sale 객체에 view 에서 필요한 정보 저장
+	 * sale 정보, saleitem 정보 db에 저장(dao) 1. sale 테이블의 saleid값 가져오기 => 최대값보다 큰 값 지정 2.
+	 * sale 정보 저장(insert) 3. Cart 정보에서 saleitem 내용 저장(insert) 4. sale 객체에 view 에서
+	 * 필요한 정보 저장
+	 * 
 	 * @param loginUser
 	 * @param cart
 	 * @return
 	 */
 	public Sale checkend(User loginUser, Cart cart) {
 		System.out.println("Sale checkend activated -> " + loginUser + "," + cart);
-		
+
 		// 1. sale 테이블의 saleid값 가져오기 => 최대값보다 큰 값 지정
 		int curId = saleDao.maxNumId();
 		int inputId = curId + 1;
@@ -157,12 +157,12 @@ public class ShopService {
 		sale.setUser(loginUser);
 		sale.setUserid(loginUser.getUserid());
 		saleDao.insert(sale);
-		
+
 		// 3. Cart 정보에서 saleitem 내용 저장(insert)
 		int i = 0;
-		for(ItemSet itemSet : cart.getItemSetList()) {
+		for (ItemSet itemSet : cart.getItemSetList()) {
 			int seq = ++i;
-			SaleItem saleItem = new SaleItem(sale.getSaleid(),seq,itemSet);
+			SaleItem saleItem = new SaleItem(sale.getSaleid(), seq, itemSet);
 			sale.getItemList().add(saleItem);
 			saleItemDao.insert(saleItem);
 		}
@@ -172,7 +172,7 @@ public class ShopService {
 	}
 
 	public int boardcount(String searchtype, String searchcontent) {
-		return boardDao.count(searchtype,searchcontent);
+		return boardDao.count(searchtype, searchcontent);
 	}
 
 	public List<Board> boardlist(Integer pageNum, int limit, String searchtype, String searchcontent) {
@@ -200,7 +200,7 @@ public class ShopService {
 	}
 
 	public Board getBoard(Integer num, boolean b) {
-		if(b) {
+		if (b) {
 			boardDao.readcntAdd(num);
 		}
 		return boardDao.selectOne(num);

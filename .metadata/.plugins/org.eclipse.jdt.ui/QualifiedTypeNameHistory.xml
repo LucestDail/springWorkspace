@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="java.io.FileInputStream"/>
-    <fullyQualifiedTypeName name="java.io.IOException"/>
-    <fullyQualifiedTypeName name="javax.mail.Session"/>
-    <fullyQualifiedTypeName name="javax.mail.internet.MimeMessage"/>
     <fullyQualifiedTypeName name="javax.mail.internet.InternetAddress"/>
     <fullyQualifiedTypeName name="java.io.UnsupportedEncodingException"/>
     <fullyQualifiedTypeName name="javax.mail.Message"/>
@@ -14,7 +10,6 @@
     <fullyQualifiedTypeName name="javax.mail.BodyPart"/>
     <fullyQualifiedTypeName name="javax.mail.internet.MimeBodyPart"/>
     <fullyQualifiedTypeName name="logic.Cart"/>
-    <fullyQualifiedTypeName name="logic.Sale"/>
     <fullyQualifiedTypeName name="dao.SaleDao"/>
     <fullyQualifiedTypeName name="dao.SaleItemDao"/>
     <fullyQualifiedTypeName name="logic.User"/>
@@ -54,10 +49,15 @@
     <fullyQualifiedTypeName name="java.util.List"/>
     <fullyQualifiedTypeName name="logic.Item"/>
     <fullyQualifiedTypeName name="dao.mapper.ItemMapper"/>
-    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Insert"/>
     <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Update"/>
     <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Delete"/>
     <fullyQualifiedTypeName name="org.mybatis.spring.SqlSessionTemplate"/>
-    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Select"/>
     <fullyQualifiedTypeName name="dao.mapper.UserMapper"/>
+    <fullyQualifiedTypeName name="dao.mapper.SaleMapper"/>
+    <fullyQualifiedTypeName name="logic.Sale"/>
+    <fullyQualifiedTypeName name="dao.mapper.SaleItemMapper"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Insert"/>
+    <fullyQualifiedTypeName name="org.apache.ibatis.annotations.Select"/>
+    <fullyQualifiedTypeName name="dao.mapper.BoardMapper"/>
+    <fullyQualifiedTypeName name="java.lang.IndexOutOfBoundsException"/>
 </qualifiedTypeNameHistroy>

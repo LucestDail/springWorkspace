@@ -13,9 +13,7 @@ import logic.Item;
 public interface ItemMapper {
 	@Select({"<script>",
 			" select * from item ",
-			"<if test='id != null'>",
-				" where id=#{id} ",
-			"</if>",
+			"<if test='id != null'> where id=#{id}</if>",
 			"</script>"})
 	List<Item> select(Map<String, Object> param);
 	

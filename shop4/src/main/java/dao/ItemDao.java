@@ -15,7 +15,7 @@ import logic.Item;
 public class ItemDao {
 	@Autowired
 	private SqlSessionTemplate template;
-	private Map<String,Object> param = new HashMap<>();
+	private Map<String, Object> param = new HashMap<>();
 
 	public List<Item> list() {
 		return template.getMapper(ItemMapper.class).select(null);
