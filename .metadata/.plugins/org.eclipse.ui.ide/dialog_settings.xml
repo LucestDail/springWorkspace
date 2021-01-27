@@ -8,4 +8,17 @@
 	</section>
 	<section name="NewWizardAction">
 	</section>
+	<section name="SmartImportWizard">
+		<item key="SmartImportRootWizardPage.STORE_HIDE_ALREADY_OPEN" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_CLOSE_IMPORTED" value="false"/>
+		<item key="SmartImportRootWizardPage.STORE_NESTED_PROJECTS" value="true"/>
+		<item key="SmartImportRootWizardPage.STORE_CONFIGURE_NATURES" value="true"/>
+		<list key="org.eclipse.ui.internal.wizards.datatransfer.SmartImportRootWizardPage.knownSources">
+			<item value="C:\Users\dhtmd\myworkspace\jdbcWorkspace\Movie"/>
+			<item value="C:\Users\dhtmd\myworkspace\jdbcWorkspace\jsoupstudy"/>
+			<item value="C:\Users\dhtmd\myworkspace\jdbcWorkspace\chartstudy"/>
+			<item value="C:\Users\dhtmd\myworkspace\jdbcWorkspace\ajaxstudy"/>
+			<item value="C:\Users\dhtmd\myworkspace\jdbcWorkspace\jspstudy2"/>
+		</list>
+	</section>
 </section>
