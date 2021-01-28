@@ -50,7 +50,7 @@ public interface BoardMapper {
 	@Select("SELECT name, count(name) cnt from board group by NAME ORDER BY cnt DESC LIMIT 0,5")
 	List<Map<String, Object>> graph1();
 
-	@Select("SELECT date_format(regdate, '%Y-%m-%d') regdate, count(regdate) cnt from board group by date_format(regdate, '%Y%m%d') ORDER BY cnt DESC")
+	@Select("SELECT date_format(regdate, '%Y-%m-%d') regdate, count(regdate) cnt from board group by date_format(regdate, '%Y%m%d') ORDER BY regdate DESC")
 	List<Map<String, Object>> graph2();
 	
 }

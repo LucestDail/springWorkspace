@@ -165,7 +165,6 @@ public class AjaxController {
 			}
 		}
 		json.append("]");
-		System.out.println(json.toString());
 		return json.toString();
 	}
 }

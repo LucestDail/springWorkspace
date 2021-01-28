@@ -101,7 +101,6 @@ var randomColorFactor = function(){
 	  $.ajax("${path}/ajax/graph.shop",{
 		  success : function(data) { //글쓴이별 게시글 등록 건수
 // data : [{"name":"홍길동","cnt":5},{"name":"테스트","cnt":4}]
-	  		console.log(data);
 			  pieGraphPrint(data);
 		  },
 		  error : function(e) {
@@ -112,7 +111,6 @@ var randomColorFactor = function(){
   function bargraph() {
 	  $.ajax("${path}/ajax/graph2.shop",{
 		  success : function(data) {
-			  console.log(data);
 			  barGraphPrint(data);
 		  },
 		  error : function(e) {
