@@ -3,8 +3,16 @@ package controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -71,4 +79,93 @@ public class AjaxController {
 		return html.toString();
 	}
 	
+	@RequestMapping(value="exchange2",produces="text/html; charset=utf-8")
+	public String exchange2() {
+		Map<String, List<String>> map = new HashMap<>();
+		StringBuilder html = new StringBuilder();
+		String url = "http://fx.kebhana.com/FER1101M.web";
+		try {
+			String kebhana = Jsoup.connect(url).get().text();
+			String strJson = kebhana.substring(kebhana.indexOf("{"));
+			JSONParser jsonParser = new JSONParser();
+			JSONObject json = (JSONObject) jsonParser.parse(strJson.trim());
+			JSONArray array = (JSONArray) json.get("리스트");
+			for(int i = 0; i < array.size(); i++) {
+				JSONObject obj = (JSONObject) array.get(i);
+				if(obj.get("통화명").toString().contains("미국")||
+				   obj.get("통화명").toString().contains("일본")||
+				   obj.get("통화명").toString().contains("유로")||
+				   obj.get("통화명").toString().contains("영국")||
+				   obj.get("통화명").toString().contains("중국")) {
+					String str = obj.get("통화명").toString();
+					String[] sarr = str.split(" ");
+					String key = sarr[0];
+					String code = sarr[1];
+					List<String> list = new ArrayList<String>();
+					list.add(code);
+					list.add(obj.get("매매기준율").toString());
+					list.add(obj.get("현찰파실때").toString());
+					list.add(obj.get("현찰사실때").toString());
+					map.put(key, list);
+				}
+			}
+			html.append("<table class = 'table' style='text-align:center;'>");
+			html.append("<caption>KEB 하나은행 : " + json.get("날짜").toString() + "</caption>");
+			html.append("<tr><th rowspan = '2'>코드</th><th rowspan = '2'> 기준율</th><th colspan = '2'>현찰</th></tr>");
+			html.append("<tr><th>파실때</th><th>사실때</th></tr>");
+			
+			for(Map.Entry<String,List<String>> m : map.entrySet()) {
+				html.append("<tr>");
+				html.append("<td>" +m.getKey() + "<br>" + m.getValue().get(0) + "</td>");
+				html.append("<td>" + m.getValue().get(1) + "</td>");
+				html.append("<td>" + m.getValue().get(2) + "</td>");
+				html.append("<td>" + m.getValue().get(3) + "</td>");
+				html.append("</tr>");
+			}
+			html.append("</table>");
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
+		return html.toString();
+	}
+	
+	@RequestMapping(value="graph",produces="text/html; charset=utf-8")
+	public String graph() {
+		Map<String,Object> map = service.graph1();
+		StringBuilder json = new StringBuilder("[");
+		int i = 0;
+		for(Entry<String, Object> m : map.entrySet()) {
+			json.append("{\"name\":");
+			json.append("\"" + m.getKey() + "\"");
+			json.append(",\"cnt\":");
+			json.append("\"" + m.getValue() + "\"}");
+			i++;
+			if(i < map.size()) {
+				json.append(",");
+			}
+		}
+		json.append("]");
+		return json.toString();
+		
+	}
+	@RequestMapping(value="graph2",produces="text/html; charset=utf-8")
+	public String graph2() {
+		Map<String,Object> map = service.graph2();
+		System.out.println(map);
+		StringBuilder json = new StringBuilder("[");
+		int i = 0;
+		for(Entry<String, Object> m : map.entrySet()) {
+			json.append("{\"regdate\":");
+			json.append("\"" + m.getKey() + "\"");
+			json.append(",\"cnt\":");
+			json.append("\"" + m.getValue() + "\"}");
+			i++;
+			if(i < map.size()) {
+				json.append(",");
+			}
+		}
+		json.append("]");
+		System.out.println(json.toString());
+		return json.toString();
+	}
 }

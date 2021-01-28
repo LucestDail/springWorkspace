@@ -46,5 +46,11 @@ public interface BoardMapper {
 
 	@Select("SELECT ifnull(max(grpstep),0) FROM board WHERE grp=#{grp} AND grplevel=#{grplevel}")
 	int maxGrpStep(Board board);
+
+	@Select("SELECT name, count(name) cnt from board group by NAME ORDER BY cnt DESC LIMIT 0,5")
+	List<Map<String, Object>> graph1();
+
+	@Select("SELECT date_format(regdate, '%Y-%m-%d') regdate, count(regdate) cnt from board group by date_format(regdate, '%Y%m%d') ORDER BY cnt DESC")
+	List<Map<String, Object>> graph2();
 	
 }

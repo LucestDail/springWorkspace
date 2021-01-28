@@ -41,6 +41,11 @@ $(function(){
 			<br>  
 			<%-- ajax을 통해 얻은 환율 정보 내용 출력 --%>
    			<div id="exchange"></div>
+   			<div id="exchange2"></div>
+   			<div id="canvas-holder" style="width:50%; height:300px;">
+    			 <canvas id="canvas1" width="100%" height="100%"></canvas>
+    			 <canvas id="canvas2" width="100%" height="100%"></canvas>
+  			 </div>
 		</td>
 		<td colspan = "2" style = "text-align:left; vertical-align:top">
 			<decorator:body />
@@ -65,14 +70,15 @@ var randomColorFactor = function(){
 			  + (opa || '.3') + ")";
   }
   $(function(){
-//	  piegraph();
-//	  bargraph();
+	  piegraph();
+	  bargraph();
 	  exchangeRate();
-//	  exchangeRate2(); 
+	  exchangeRate2(); 
   })
   function exchangeRate() {
 	  $.ajax("${path}/ajax/exchange.shop",{
 		  success : function(data) {
+			  console.log("success exchange");
 			  $("#exchange").html(data);
 		  },
 		  error : function(e){
@@ -81,8 +87,9 @@ var randomColorFactor = function(){
 	  })
   }
    function exchangeRate2() {
-	  $.ajax("${path}/model2/ajax/exchange2.do",{
+	  $.ajax("${path}/ajax/exchange2.shop",{
 		  success : function(data) {
+			  console.log("success exchange2");
 			  $("#exchange2").html(data);
 		  },
 		  error : function(e){
@@ -91,9 +98,10 @@ var randomColorFactor = function(){
 	  })
   }
   function piegraph() {
-	  $.ajax("${path}/model2/ajax/graph.do",{
-		  success : function(data) {
- //data : [{"name":"홍길동","cnt":5},{"name":"테스트","cnt":4}]
+	  $.ajax("${path}/ajax/graph.shop",{
+		  success : function(data) { //글쓴이별 게시글 등록 건수
+// data : [{"name":"홍길동","cnt":5},{"name":"테스트","cnt":4}]
+	  		console.log(data);
 			  pieGraphPrint(data);
 		  },
 		  error : function(e) {
@@ -102,8 +110,9 @@ var randomColorFactor = function(){
 	  })
   }
   function bargraph() {
-	  $.ajax("${path}/model2/ajax/graph2.do",{
+	  $.ajax("${path}/ajax/graph2.shop",{
 		  success : function(data) {
+			  console.log(data);
 			  barGraphPrint(data);
 		  },
 		  error : function(e) {

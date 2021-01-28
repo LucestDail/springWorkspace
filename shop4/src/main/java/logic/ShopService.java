@@ -3,7 +3,9 @@ package logic;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -224,5 +226,21 @@ public class ShopService {
 
 	public int boardMaxGrpStep(Board board) {
 		return boardDao.maxGrpstep(board);
+	}
+
+	public Map<String, Object> graph1() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(Map<String,Object> m : boardDao.graph1()) {
+			map.put((String) m.get("name"), m.get("cnt"));
+		}
+		return map;
+	}
+
+	public Map<String, Object> graph2() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		for(Map<String,Object> m : boardDao.graph2()) {
+			map.put((String) m.get("regdate"), m.get("cnt"));
+		}
+		return map;
 	}
 }
