@@ -13,7 +13,7 @@ import logic.User;
 public interface UserMapper {
 	
 	@Select({"<script>",
-		" select * from useraccount ",
+		" select * from usersecurity ",
 		"<trim prefix = 'where' prefixOverrides = 'AND || OR'>",
 		"<if test='userid != null'>",
 			" and userid=#{userid} ",
@@ -28,11 +28,11 @@ public interface UserMapper {
 		"</script>"})
 	List<User> select(Object object);
 	
-	@Insert("insert into useraccount (userid, username, password, birthday, phoneno, postcode, address, email) values (#{userid}, #{username}, #{password}, #{birthday}, #{phoneno}, #{postcode}, #{address}, #{email})")
+	@Insert("insert into usersecurity (userid, username, password, birthday, phoneno, postcode, address, email) values (#{userid}, #{username}, #{password}, #{birthday}, #{phoneno}, #{postcode}, #{address}, #{email})")
 	void insert(User user);
 
 	@Update({"<script>",
-			" update useraccount ",
+			" update usersecurity ",
 			"<trim prefix = 'set' prefixOverrides = ','>",
 			"<if test = 'username != null'> ",
 				", username = #{username}",
@@ -59,7 +59,10 @@ public interface UserMapper {
 			" where userid=#{userid} ",
 			"</script>"})
 	void update(User user);
+	
+	@Update("update usersecurity set password = #{password} where userid = #{userid}")
+	void updatePass(User user);
 
-	@Delete("delete from useraccount where userid=#{userid}")
+	@Delete("delete from usersecurity where userid=#{userid}")
 	void delete(Map<String, String> param);
 }

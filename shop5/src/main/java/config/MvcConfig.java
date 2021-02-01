@@ -19,9 +19,9 @@ import org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandl
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@ComponentScan(basePackages = {",controller","logic","dao","aop","websocket"})
+@ComponentScan(basePackages = {"controller","logic","dao","aop","websocket","util"})
 @EnableAspectJAutoProxy //AOP 설정
-//@EnableWebMvc
+@EnableWebMvc
 public class MvcConfig implements WebMvcConfigurer{
 	@Bean
 	public HandlerMapping handlerMapping() {
@@ -41,7 +41,7 @@ public class MvcConfig implements WebMvcConfigurer{
 	@Bean
 	public MessageSource messageSource() {
 		ResourceBundleMessageSource ms = new ResourceBundleMessageSource();
-		ms.setBasename("message");
+		ms.setBasename("messages");
 		return ms;
 	}
 	
@@ -60,6 +60,7 @@ public class MvcConfig implements WebMvcConfigurer{
 		pr.put("exception.CartEmptyException", "exception");
 		pr.put("exception.LoginException", "exception");
 		pr.put("exception.BoardException", "exception");
+		pr.put("exception.RedirectException", "exception2");
 		ser.setExceptionMappings(pr);
 		return ser;
 	}

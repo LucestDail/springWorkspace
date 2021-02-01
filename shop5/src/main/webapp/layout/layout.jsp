@@ -70,10 +70,10 @@ var randomColorFactor = function(){
 			  + (opa || '.3') + ")";
   }
   $(function(){
-//	  piegraph();
-//	  bargraph();
-//	  exchangeRate();
-//	  exchangeRate2(); 
+	  piegraph();
+	  bargraph();
+	  exchangeRate();
+	  exchangeRate2(); 
   })
   function exchangeRate() {
 	  $.ajax("${path}/ajax/exchange.shop",{

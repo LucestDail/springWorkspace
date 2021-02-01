@@ -92,7 +92,7 @@ public class UserDao {
 		user.setPassword(chgpass);
 		user.setUserid(sessionUserid);
 		try {
-			template.getMapper(UserMapper.class).update(user);
+			template.getMapper(UserMapper.class).updatePass(user);
 		} catch (IndexOutOfBoundsException e) {
 			System.out.println("error occured while delete -> check information : " + sessionUserid);
 			e.printStackTrace();

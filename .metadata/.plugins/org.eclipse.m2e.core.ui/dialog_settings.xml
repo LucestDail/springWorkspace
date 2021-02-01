@@ -27,6 +27,7 @@
 	</section>
 	<section name="Maven2ProjectWizardArchifactPage">
 		<list key="package">
+			<item value="kr.goodee.javasecurity"/>
 			<item value="kr.goodee.shop5"/>
 			<item value="kr.goodee.shop4"/>
 			<item value="kr.goodee.osh"/>
@@ -44,6 +45,7 @@
 			<item value="kr.goodee"/>
 		</list>
 		<list key="artifactId">
+			<item value="javasecurity"/>
 			<item value="shop5"/>
 			<item value="shop4"/>
 			<item value="osh"/>

@@ -1,6 +1,7 @@
 package controller;
 
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Map;
 
@@ -26,12 +27,15 @@ import logic.Sale;
 import logic.SaleItem;
 import logic.ShopService;
 import logic.User;
+import util.CipherUtil;
 
 @Controller
 @RequestMapping("user")
 public class UserController {
 	@Autowired
 	private ShopService service;
+	@Autowired
+	private CipherUtil cipher;
 
 	// http://localhost:8080/shop3/user/userEntry.shop
 	@GetMapping("userEntry")
@@ -51,12 +55,16 @@ public class UserController {
 			return mav;
 		}
 		try {
+			user.setPassword(cipher.makehash(user.getPassword()));
 			service.insertUser(user);
 			mav.addObject("user", user);
 		} catch (DataIntegrityViolationException e) {
 			mav.getModel().putAll(bindingResult.getModel());
 			bindingResult.reject("error.duplicate.user");
 			return mav;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 //		mav.setViewName("user/userEntrySuccess");
 		mav.setViewName("redirect:login.shop");
@@ -86,7 +94,9 @@ public class UserController {
 				mav.getModel().putAll(bindingResult.getModel());
 				return mav;
 			} else {
-				if (user.getPassword().equals(dbuser.getPassword())) {
+				String hashPass = dbuser.getPassword();
+				String curPass = cipher.makehash(user.getPassword());
+				if (hashPass.equals(curPass)) {
 					session.setAttribute("loginUser", dbuser);
 //					mav.setViewName("user/loginsuccess");
 				} else {
@@ -101,6 +111,9 @@ public class UserController {
 			mav.getModel().putAll(bindingResult.getModel());
 			mav.setViewName("redirect:login.shop");
 			return mav;
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		mav.setViewName("redirect:main.shop");
 		return mav;
@@ -167,11 +180,14 @@ public class UserController {
 			bindingResult.reject("error.input.user");
 			return mav;
 		}
-
+		try {
+			user.setPassword(cipher.makehash(user.getPassword()));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		User dbuser = null;
 		User newUserSession = null;
 		if (((User) session.getAttribute("loginUser")).getUserid().equals("admin")) {//관리자가 시도
-
 			dbuser = service.getUserById("admin");
 			if (!dbuser.getPassword().equals(user.getPassword())) {//관리자인데 비밀번호 틀렸다.
 				bindingResult.reject("error.login.password");
@@ -232,7 +248,13 @@ public class UserController {
 		if(userid.equals("admin")) {
 			throw new LoginException("관리자 탈퇴 불가","main.shop");
 		}
-		if(!password.equals(loginUser.getPassword())) {
+		String hashPass = null;
+		try {
+			hashPass = cipher.makehash(password);
+		} catch (NoSuchAlgorithmException e1) {
+			e1.printStackTrace();
+		}
+		if(!hashPass.equals(loginUser.getPassword())) {
 			throw new LoginException("탈퇴시 비밀번호가 틀립니다.","delete.shop?id="+userid);
 		}
 		try {
@@ -425,6 +447,14 @@ public class UserController {
 	public ModelAndView passwordchg(@RequestParam Map<String, String> param, HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		String sessionUserid = ((User)session.getAttribute("loginUser")).getUserid();
+		try {
+			param.put("pass", cipher.makehash(param.get("pass")));
+			param.put("chgpass", cipher.makehash(param.get("chgpass")));
+			param.put("chgpass2", cipher.makehash(param.get("chgpass2")));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		if(!param.get("pass").equals(service.getUserById(sessionUserid).getPassword())) {
 			throw new RedirectException("현재 비밀번호가 기존 비밀번호와 다릅니다.","window.close()");
 		}else if(!param.get("chgpass").equals(param.get("chgpass2"))) {
