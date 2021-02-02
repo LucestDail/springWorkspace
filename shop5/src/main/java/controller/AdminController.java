@@ -73,7 +73,7 @@ public class AdminController {
 		return mav;
 	}
 	
-	private void mailSend(Mail mail) {
+	public void mailSend(Mail mail) {
 		MyAuthenticator auth = new MyAuthenticator(mail.getNaverid(), mail.getNaverpw());
 		Properties prop = new Properties();
 		try {
@@ -107,6 +107,11 @@ public class AdminController {
 			MimeBodyPart message = new MimeBodyPart();
 			message.setContent(mail.getContents(),mail.getMtype());
 			multipart.addBodyPart(message);
+			if(mail.getFile1() == null) {
+				mimeMsg.setContent(multipart);
+				Transport.send(mimeMsg);
+				return;
+			}
 			for(MultipartFile mf : mail.getFile1()) {
 				if((mf != null) && (!mf.isEmpty())) {
 					multipart.addBodyPart(bodyPart(mf));

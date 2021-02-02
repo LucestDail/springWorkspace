@@ -2,8 +2,10 @@ package controller;
 
 
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
@@ -23,6 +25,7 @@ import org.springframework.web.servlet.ModelAndView;
 import exception.LoginException;
 import exception.RedirectException;
 import logic.Item;
+import logic.Mail;
 import logic.Sale;
 import logic.SaleItem;
 import logic.ShopService;
@@ -341,6 +344,7 @@ public class UserController {
 		mav.addObject(u);
 		return mav;
 	}
+	
 	@PostMapping("{url}search")
 	public ModelAndView search(User user, BindingResult bindingResult, @PathVariable String url) {
 		ModelAndView mav = new ModelAndView();
@@ -364,7 +368,6 @@ public class UserController {
 			mav.getModel().putAll(bindingResult.getModel());
 			return mav;
 		}
-//		return mav;
 		if(user.getUserid() != null && user.getUserid().equals("")) {
 			user.setUserid(null);
 		}
@@ -379,25 +382,37 @@ public class UserController {
 		mav.addObject("result",result);
 		mav.addObject("title",title);
 		if(url.equals("pw")) {
-			mav.addObject("pass",result.substring(0,2) + "**");
+			mav.addObject("pass",result);
 			mav.setViewName("user/pw");
 			return mav;
 		}
 		mav.addObject("id",result);
 		mav.setViewName("user/id");
 		return mav;
-		
 	}
 	
 	
 	@PostMapping("id")
 	public ModelAndView idsearch(String email, String tel) {
 		ModelAndView mav = new ModelAndView();
-		User user = service.getUserByEmailTel(email,tel);
+		List<User> list = service.getUserByTel(tel);
+		List<String> emailList = new ArrayList<String>();
+		for(User u : list) {
+			emailList.add(encryptEmail(u.getUserid(),email));
+		}
+		User user = null;
+		for(String emailOne : emailList) {
+			user = service.getUserByEmailTel(emailOne,tel);
+			if(user != null) {
+				mav.addObject("id",user.getUserid());
+				return mav;
+			}
+		}
+//		User user = service.getUserByEmailTel(email,tel);
 		if(user == null) {
 			throw new RedirectException("해당되는 정보가 없습니다","window.close()");
 		}
-		mav.addObject("id",user.getUserid());
+//		mav.addObject("id",user.getUserid());
 		return mav;
 	}
 	
@@ -409,11 +424,30 @@ public class UserController {
 	@PostMapping("pw")
 	public ModelAndView pwsearch(String id, String email, String tel) {
 		ModelAndView mav = new ModelAndView();
-		User user = service.getUserByIdEmailTel(id,email,tel);
+		User user = service.getUserByIdEmailTel(id,encryptEmail(id,email),tel);
 		if(user == null) {
 			throw new RedirectException("해당되는 정보가 없습니다","window.close()");
 		}
-		String returnPassValue = user.getPassword().substring(0,2) + "**";
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < 8; i ++) {
+			sb.append(String.valueOf((char) ((int) (new Random().nextInt(26)) + 65)));
+		}
+		String returnPassValue = sb.toString();
+		try {
+			service.chgpassUser(id, cipher.makehash(returnPassValue));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		Mail m = new Mail();
+		m.setNaverid("dhtmdgussksm");
+		m.setNaverpw("epdlfnti135");
+		m.setTitle(id + "회원님의 변경 비밀번호 안내입니다.");
+		m.setRecipient(email);
+		m.setMtype("text/plain; charset=utf-8");
+		m.setContents(returnPassValue + " 으로 변경되었습니다.");
+		m.setFile1(null);
+		new AdminController().mailSend(m);
+		returnPassValue = "등록하신 이메일 " + email + "으로 변경된 비밀번호가 발송되었습니다";
 		mav.addObject("pass",returnPassValue);
 		return mav;
 	}
@@ -467,5 +501,27 @@ public class UserController {
 			session.setAttribute("loginUser", newuser);
 			throw new RedirectException("비밀번호가 변경되었습니다!","window.close()");
 		}
+	}
+	
+	public String encryptEmail(String id,String email) {
+		CipherUtil cu = new CipherUtil();
+		String key = null;
+		try {
+			key = cu.makehash(id);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return new CipherUtil().encrypt(key,email);
+	}
+	
+	public String decryptEmail(String id,String email) {
+		CipherUtil cu = new CipherUtil();
+		String key = null;
+		try {
+			key = cu.makehash(id);
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
+		return new CipherUtil().decrypt(key,email);
 	}
 }

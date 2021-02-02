@@ -243,4 +243,8 @@ public class ShopService {
 		}
 		return map;
 	}
+
+	public List<User> getUserByTel(String tel) {
+		return userDao.selectByEmailTel(tel);
+	}
 }

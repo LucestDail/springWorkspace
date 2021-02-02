@@ -83,7 +83,6 @@ public class DigestMain2 {
 		} finally {
 			DbConnection.close(conn, pstmt, null);
 		}
-
 		return null;
 	}
 

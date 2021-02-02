@@ -50,7 +50,7 @@
         </tr>
          <tr height="40px">
             <td colspan="2" align = "center">
-               <input type = "submit" value = "아이디찾기" class = "btn btn-primary">
+               <input type = "submit" value = "비밀번호찾기" class = "btn btn-primary">
             </td>
         </tr>
     </table>

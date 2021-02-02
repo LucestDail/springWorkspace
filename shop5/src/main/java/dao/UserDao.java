@@ -65,7 +65,7 @@ public class UserDao {
 		try {
 			user = template.getMapper(UserMapper.class).select(param).get(0);
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("error occured while delete -> check information : " + param);
+			System.out.println("error occured while select -> check information : " + param);
 			e.printStackTrace();
 		}
 		return user;
@@ -79,7 +79,7 @@ public class UserDao {
 		try {
 			user = template.getMapper(UserMapper.class).select(param).get(0);
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("error occured while delete -> check information : " + param);
+			System.out.println("error occured while select -> check information : " + param);
 			e.printStackTrace();
 		}
 		return user;
@@ -94,8 +94,14 @@ public class UserDao {
 		try {
 			template.getMapper(UserMapper.class).updatePass(user);
 		} catch (IndexOutOfBoundsException e) {
-			System.out.println("error occured while delete -> check information : " + sessionUserid);
+			System.out.println("error occured while update -> check information : " + sessionUserid);
 			e.printStackTrace();
 		}
+	}
+
+	public List<User> selectByEmailTel(String tel) {
+		param.clear();
+		param.put("phoneno", tel);
+		return template.getMapper(UserMapper.class).select(param);
 	}
 }
