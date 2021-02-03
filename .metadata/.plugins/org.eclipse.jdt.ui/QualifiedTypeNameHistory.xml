@@ -1,17 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="org.json.simple.JSONArray"/>
-    <fullyQualifiedTypeName name="org.apache.tomcat.util.json.JSONParser"/>
-    <fullyQualifiedTypeName name="org.json.simple.parser.JSONParser"/>
-    <fullyQualifiedTypeName name="java.util.Map.Entry"/>
-    <fullyQualifiedTypeName name="javax.servlet.http.HttpServletRequest"/>
-    <fullyQualifiedTypeName name="org.springframework.context.annotation.ComponentScan"/>
-    <fullyQualifiedTypeName name="org.springframework.context.annotation.EnableAspectJAutoProxy"/>
-    <fullyQualifiedTypeName name="org.springframework.web.servlet.config.annotation.EnableWebMvc"/>
-    <fullyQualifiedTypeName name="org.springframework.web.servlet.config.annotation.WebMvcConfigurer"/>
-    <fullyQualifiedTypeName name="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
-    <fullyQualifiedTypeName name="org.springframework.web.servlet.HandlerMapping"/>
-    <fullyQualifiedTypeName name="org.springframework.web.servlet.ViewResolver"/>
     <fullyQualifiedTypeName name="org.springframework.web.servlet.view.InternalResourceViewResolver"/>
     <fullyQualifiedTypeName name="org.springframework.context.support.ResourceBundleMessageSource"/>
     <fullyQualifiedTypeName name="org.springframework.context.MessageSource"/>
@@ -47,12 +35,10 @@
     <fullyQualifiedTypeName name="java.util.Random"/>
     <fullyQualifiedTypeName name="controller.AdminController"/>
     <fullyQualifiedTypeName name="logic.Mail"/>
-    <fullyQualifiedTypeName name="javax.crypto.Cipher"/>
     <fullyQualifiedTypeName name="java.security.NoSuchAlgorithmException"/>
     <fullyQualifiedTypeName name="javax.crypto.KeyGenerator"/>
     <fullyQualifiedTypeName name="javax.crypto.SecretKey"/>
     <fullyQualifiedTypeName name="java.security.Key"/>
-    <fullyQualifiedTypeName name="java.security.spec.AlgorithmParameterSpec"/>
     <fullyQualifiedTypeName name="javax.crypto.spec.IvParameterSpec"/>
     <fullyQualifiedTypeName name="javax.crypto.spec.SecretKeySpec"/>
     <fullyQualifiedTypeName name="java.security.MessageDigest"/>
@@ -60,4 +46,18 @@
     <fullyQualifiedTypeName name="util.CipherUtil"/>
     <fullyQualifiedTypeName name="java.util.ArrayList"/>
     <fullyQualifiedTypeName name="logic.User"/>
+    <fullyQualifiedTypeName name="controller.UserController"/>
+    <fullyQualifiedTypeName name="sun.security.krb5.internal.crypto.dk.Des3DkCrypto"/>
+    <fullyQualifiedTypeName name="aes.CipherUtil"/>
+    <fullyQualifiedTypeName name="java.io.ObjectInputStream"/>
+    <fullyQualifiedTypeName name="java.security.spec.AlgorithmParameterSpec"/>
+    <fullyQualifiedTypeName name="java.io.FileInputStream"/>
+    <fullyQualifiedTypeName name="javax.crypto.CipherOutputStream"/>
+    <fullyQualifiedTypeName name="java.security.PrivateKey"/>
+    <fullyQualifiedTypeName name="java.security.PublicKey"/>
+    <fullyQualifiedTypeName name="javax.crypto.Cipher"/>
+    <fullyQualifiedTypeName name="java.security.KeyPairGenerator"/>
+    <fullyQualifiedTypeName name="java.security.KeyPair"/>
+    <fullyQualifiedTypeName name="java.io.ObjectOutputStream"/>
+    <fullyQualifiedTypeName name="java.io.FileOutputStream"/>
 </qualifiedTypeNameHistroy>

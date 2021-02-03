@@ -59,6 +59,7 @@ public class UserController {
 		}
 		try {
 			user.setPassword(cipher.makehash(user.getPassword()));
+			user.setEmail(encryptEmail(user.getUserid(), user.getEmail()));
 			service.insertUser(user);
 			mav.addObject("user", user);
 		} catch (DataIntegrityViolationException e) {
@@ -148,6 +149,7 @@ public class UserController {
 		ModelAndView mav = new ModelAndView();
 		User user = null;
 		user = service.getUserById(id);
+		user.setEmail(decryptEmail(user.getUserid(), user.getEmail()));
 		List<Sale> salelist = service.salelist(id);
 		for (Sale sale : salelist) {
 			List<SaleItem> saleitemlist = service.saleItemList(sale.getSaleid());
@@ -206,6 +208,7 @@ public class UserController {
 			}
 		}
 		//정상적으로 비밀번호 절차 실시 후
+		user.setEmail(encryptEmail(user.getUserid(), user.getEmail()));
 		service.updateUser(user);
 		if(((User) session.getAttribute("loginUser")).getUserid().equals("admin") && user.getUserid().equals("admin")) {
 			//세션 정보도 관리자, 현재 파라매터 정보도 관리자 => 지금 바꾼 정보가 관리자 본인 정보다...
@@ -373,6 +376,38 @@ public class UserController {
 		}
 		String result = null;
 		try {
+			/**
+			 * url = id
+			 * id => phone (id 리스트 호출)
+			 * email 암호화 후 비교하여 맞으면 해당 user email,phoneno 로 정보 가져오기
+			 * 
+			 * 
+			 * pw(0)
+			 * email 암호화 후 user 정보 가져오기
+			 * 
+			 * 
+			 * 
+			 */
+			if(url.equals("id")) {
+				List<User> list = service.getUserByTel(user.getPhoneno());
+				List<String> emailList = new ArrayList<String>();
+				for(User u : list) {
+					emailList.add(encryptEmail(u.getUserid(),user.getEmail()));
+				}
+				User targetUser = null;
+				for(String emailOne : emailList) {
+					targetUser = service.getUserByEmailTel(emailOne,user.getPhoneno());
+					System.out.println(targetUser);
+					if(targetUser != null) {
+						mav.addObject("id",targetUser.getUserid());
+						mav.addObject("title",title);
+						mav.setViewName("user/id");
+						return mav;
+					}
+				}
+			}else {
+				user.setEmail(encryptEmail(user.getUserid(), user.getEmail()));
+			}
 			result = service.getSearch(user);
 		}catch(EmptyResultDataAccessException e) {
 			bindingResult.reject(code);
@@ -381,8 +416,24 @@ public class UserController {
 		}
 		mav.addObject("result",result);
 		mav.addObject("title",title);
+		String returnValue = randomMake();
+		try {
+			service.chgpassUser(user.getUserid(), cipher.makehash(returnValue));
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+		}
 		if(url.equals("pw")) {
-			mav.addObject("pass",result);
+//			mav.addObject("pass",result);
+			mav.addObject("pass","등록하신 이메일 " + decryptEmail(user.getUserid(),user.getEmail()) + "으로 변경된 비밀번호가 발송되었습니다");
+			Mail m = new Mail();
+			m.setNaverid("dhtmdgussksm");
+			m.setNaverpw("epdlfnti135");
+			m.setTitle(user.getUserid() + "회원님의 변경 비밀번호 안내입니다.");
+			m.setRecipient(decryptEmail(user.getUserid(),user.getEmail()));
+			m.setMtype("text/plain; charset=utf-8");
+			m.setContents(returnValue + " 으로 변경되었습니다.");
+			m.setFile1(null);
+			new AdminController().mailSend(m);
 			mav.setViewName("user/pw");
 			return mav;
 		}
@@ -428,11 +479,7 @@ public class UserController {
 		if(user == null) {
 			throw new RedirectException("해당되는 정보가 없습니다","window.close()");
 		}
-		StringBuffer sb = new StringBuffer();
-		for(int i = 0; i < 8; i ++) {
-			sb.append(String.valueOf((char) ((int) (new Random().nextInt(26)) + 65)));
-		}
-		String returnPassValue = sb.toString();
+		String returnPassValue = randomMake();
 		try {
 			service.chgpassUser(id, cipher.makehash(returnPassValue));
 		} catch (NoSuchAlgorithmException e) {
@@ -450,6 +497,15 @@ public class UserController {
 		returnPassValue = "등록하신 이메일 " + email + "으로 변경된 비밀번호가 발송되었습니다";
 		mav.addObject("pass",returnPassValue);
 		return mav;
+	}
+	
+	private String randomMake() {
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < 8; i ++) {
+			sb.append(String.valueOf((char) ((int) (new Random().nextInt(26)) + 65)));
+		}
+		String returnPassValue = sb.toString();
+		return returnPassValue;
 	}
 	
 	@GetMapping("passwordform")

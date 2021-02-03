@@ -1,11 +1,16 @@
 package aes;
 
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.security.Key;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.AlgorithmParameterSpec;
 
 import javax.crypto.Cipher;
+import javax.crypto.CipherOutputStream;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
@@ -137,6 +142,67 @@ public class CipherUtil {
 		byte[] plain = msg.getBytes();
 		byte[] hash = md.digest(plain);
 		return byteToHex(hash);
+	}
+
+	public static void encryptFile(String plainFile, String cipherFile, String strkey) {
+		// TODO Auto-generated method stub
+		try {
+			getKey(strkey);//ley 파일에 등록
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("key.ser"));
+			Key key = (Key) ois.readObject();
+			ois.close();
+			AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
+			cipher.init(Cipher.ENCRYPT_MODE, key,paramSpec);
+			FileInputStream fis = new FileInputStream(plainFile);
+			FileOutputStream fos = new FileOutputStream(cipherFile);
+			//암호 관련 스트림
+			CipherOutputStream cos = new CipherOutputStream(fos, cipher);
+			byte[] buf = new byte[1024];
+			int len;
+			while((len = fis.read(buf)) != -1) {
+				cos.write(buf,0,len);
+			}
+			fis.close();
+			cos.flush();
+			fos.flush();
+			cos.close();
+			fos.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}	
+	}
+	
+	private static void getKey(String key) throws Exception{
+		Key genkey = new SecretKeySpec(makeKey(key),"AES");
+		ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("key.ser"));
+		out.writeObject(genkey);
+		out.flush();
+		out.close();
+	}
+	
+	public static void decryptFile(String cipherFile, String plainFile) {
+		try {
+			ObjectInputStream ois = new ObjectInputStream(new FileInputStream("key.ser"));
+			Key key = (Key) ois.readObject();
+			ois.close();
+			AlgorithmParameterSpec paramSpec = new IvParameterSpec(iv);
+			cipher.init(Cipher.DECRYPT_MODE, key, paramSpec);
+			FileInputStream fis = new FileInputStream(cipherFile);
+			FileOutputStream fos = new FileOutputStream(plainFile);
+			CipherOutputStream cos = new CipherOutputStream(fos,cipher);
+			byte[] buf = new byte[1024];
+			int len;
+			while((len = fis.read(buf)) != -1) {
+				cos.write(buf,0,len);//복호화된 내용을 출력
+			}
+			fis.close();
+			cos.flush();
+			fos.flush();
+			cos.close();
+			fos.close();
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 }

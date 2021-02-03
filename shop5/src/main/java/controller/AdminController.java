@@ -49,6 +49,10 @@ public class AdminController {
 	public ModelAndView adminCheckList(HttpSession session) {
 		ModelAndView mav = new ModelAndView();
 		List<User> list = userDao.list();
+		UserController uc = new UserController();
+		for(User u : list) {
+			u.setEmail(uc.decryptEmail(u.getUserid(),u.getEmail()));
+		}
 		mav.addObject("list",list);
 		return mav;
 	}
@@ -60,6 +64,10 @@ public class AdminController {
 			throw new LoginException("메일을 보낼 대상자를 선택하세요","list.shop");
 		}
 		List<User> list = service.userList(idchks);
+		UserController uc = new UserController();
+		for(User u : list) {
+			u.setEmail(uc.decryptEmail(u.getUserid(),u.getEmail()));
+		}
 		mav.addObject("list",list);
 		return mav;
 	}
