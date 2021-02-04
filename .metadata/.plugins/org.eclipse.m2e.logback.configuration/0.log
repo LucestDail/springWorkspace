@@ -13610,3 +13610,24 @@ Caused by: java.lang.Exception: Resource '/shop5/pom.xml' does not exist.
 2021-02-03 17:17:25,817 [Worker-131: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\main\resources
 2021-02-03 17:17:25,818 [Worker-131: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
 2021-02-03 17:17:25,818 [Worker-131: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\test\resources
+2021-02-04 09:15:43,303 [Worker-1: Loading available Gradle versions] INFO  o.e.b.c.i.u.g.PublishedGradleVersions - Gradle version information cache is out-of-date. Trying to update.
+2021-02-04 09:34:34,064 [Worker-14: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 09:34:34,065 [Worker-14: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\main\resources
+2021-02-04 09:34:34,071 [Worker-14: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 09:34:34,072 [Worker-14: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\test\resources
+2021-02-04 09:39:44,628 [Worker-17: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 09:39:44,629 [Worker-17: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\main\resources
+2021-02-04 09:39:44,631 [Worker-17: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 09:39:44,632 [Worker-17: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\test\resources
+2021-02-04 09:40:44,696 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 09:40:44,696 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\main\resources
+2021-02-04 09:40:44,697 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 09:40:44,698 [Worker-16: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\test\resources
+2021-02-04 10:01:00,305 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 10:01:00,306 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\main\resources
+2021-02-04 10:01:00,307 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 10:01:00,308 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\test\resources
+2021-02-04 10:03:17,419 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 10:03:17,419 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\main\resources
+2021-02-04 10:03:17,420 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - Using 'UTF-8' encoding to copy filtered resources.
+2021-02-04 10:03:17,420 [Worker-19: Building] INFO  o.e.m.c.i.embedder.EclipseLogger - skip non existing resourceDirectory C:\Users\dhtmd\myworkspace\springWorkspace\javasecurity\src\test\resources

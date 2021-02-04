@@ -2,6 +2,7 @@ package rsa;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;
+import java.security.Key;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.PrivateKey;
@@ -32,22 +33,29 @@ public class CipherRSA {
 		}
 	}
 	
-	public static String encrypt(String plain) {
+	public static String encrypt(String org, int menu1) {
 		byte[] cipherMsg = new byte[1024];
 		try {
-			cipher.init(Cipher.ENCRYPT_MODE, pubKey);
-			cipherMsg = cipher.doFinal(plain.getBytes());
+			if(menu1 == 1) {
+				cipher.init(Cipher.ENCRYPT_MODE, getPublicKey());
+			}else {
+				cipher.init(Cipher.ENCRYPT_MODE, getPrivateKey());
+			}
+			cipherMsg = cipher.doFinal(org.getBytes());
 		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		return byteToHex(cipherMsg);
 	}
-	
-	
-	public static String decrypt(String cipherMsg) {
+
+	public static String decrypt(String cipherMsg, int menu1) {
 		byte[] plainMsg = new byte[1024];
 		try {
-			cipher.init(Cipher.DECRYPT_MODE, priKey);
+			if(menu1 == 1) {
+				cipher.init(Cipher.DECRYPT_MODE, getPublicKey());
+			}else {
+				cipher.init(Cipher.DECRYPT_MODE, getPrivateKey());
+			}
 			plainMsg = cipher.doFinal(hexToByte(cipherMsg.trim()));
 		}catch (Exception e) {
 			e.printStackTrace();
@@ -98,4 +106,17 @@ public class CipherRSA {
 			e.printStackTrace();
 		}
 	}
+	
+	public static PublicKey getPublicKey() {
+		
+		return null;
+	}
+	
+	
+	
+	private static Key getPrivateKey() {
+		
+		return null;
+	}
+
 }
